@@ -84,12 +84,12 @@ After the secrets are added:
 
 ```
 .
+├── .github/workflows/
+| └── deploy.yml           # GitHub Actions workflow
 ├── main.tf                # VCN, NAT, Subnet, Routing, Security
 ├── variables.tf           # Type-safe and documented variables
 ├── outputs.tf             # Resource IDs output
-├── terraform.tfvars       # (Optional) Pre-set values
-└── .github/workflows/
- └── deploy.yml            # GitHub Actions workflow
+└── terraform.tfvars       # (Optional) Pre-set values
 ```
 
 ---
