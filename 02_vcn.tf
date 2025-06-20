@@ -1,17 +1,3 @@
-provider "oci" {
-  tenancy_ocid     = var.tenancy_ocid
-  user_ocid        = var.user_ocid
-  fingerprint      = var.fingerprint
-  private_key_path = var.private_key_path
-  region           = var.region
-}
-
-resource "oci_identity_compartment" "main_compartment" {
-  name          = var.compartment_name
-  description   = "Compartment for ${var.vcn_display_name}"
-  enable_delete = true
-}
-
 resource "oci_core_vcn" "main_vcn" {
   compartment_id = oci_identity_compartment.main_compartment.id
   cidr_block     = var.vcn_cidr_block

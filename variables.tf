@@ -59,3 +59,32 @@ variable "subnet_display_name" {
   type        = string
   default     = "vscode-tunnel-tiny-private-subnet"
 }
+
+variable "instance_type" {
+  description = "Compute instance type to use."
+  type        = string
+  default     = "VM.Standard.A1.Flex"
+}
+
+variable "instance_name" {
+  description = "Display name for the instance."
+  type        = string
+  default     = "vscode-tunnel-instance"
+}
+
+variable "ssh_public_key" {
+  description = "Raw SSH public key content."
+  type        = string
+}
+
+variable "vscode_github_token" {
+  description = "GitHub personal access token for VS Code tunnel authentication."
+  type        = string
+  sensitive   = true
+}
+
+variable "alert_email" {
+  description = "Email address to send budget alerts."
+  type        = string
+  default     = ""
+}

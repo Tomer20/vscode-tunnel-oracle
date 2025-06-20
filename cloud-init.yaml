@@ -1,0 +1,10 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+packages:
+  - curl
+  - wget
+
+runcmd:
+  - curl -fsSL https://aka.ms/install-vscode-server/setup.sh | bash
+  - su - ubuntu -c "code tunnel --accept-server-license-terms --token '${github_token}' --name '${instance_name}'"
