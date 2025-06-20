@@ -75,6 +75,7 @@ variable "instance_name" {
 variable "ssh_public_key" {
   description = "Raw SSH public key content."
   type        = string
+  sensitive   = true
 }
 
 variable "vscode_github_token" {
@@ -86,5 +87,5 @@ variable "vscode_github_token" {
 variable "alert_email" {
   description = "Email address to send budget alerts."
   type        = string
-  default     = ""
+  sensitive   = true
 }
