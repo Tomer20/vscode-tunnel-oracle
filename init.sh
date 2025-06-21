@@ -33,7 +33,6 @@ else
   oci os bucket create \
     --name "$BUCKET_NAME" \
     --compartment-id "$COMPARTMENT_ID" \
-    --namespace "$NAMESPACE" \
     --storage-tier Standard \
     --public-access-type NoPublicAccess \
     --versioning "Enabled" \

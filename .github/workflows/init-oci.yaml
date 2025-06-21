@@ -39,6 +39,7 @@ jobs:
         tenancy=${{ secrets.OCI_TENANCY_OCID }}
         region=${{ secrets.OCI_REGION }}
         EOF
+        chmod 600 ~/.oci/config
 
     - name: Make init.sh executable
       run: chmod +x ./init.sh
