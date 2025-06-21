@@ -47,4 +47,5 @@ jobs:
       env:
         OCI_COMPARTMENT_NAME: ${{ vars.OCI_COMPARTMENT_NAME }}
         OCI_BUCKET_NAME: ${{ vars.OCI_BUCKET_NAME }}
+        OCI_TENANCY_OCID: ${{ secrets.OCI_TENANCY_OCID }}
       run: ./init.sh

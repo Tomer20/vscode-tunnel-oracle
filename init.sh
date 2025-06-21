@@ -6,7 +6,7 @@ set -e
 COMPARTMENT_NAME="${OCI_COMPARTMENT_NAME:-vscode-tunnel-compartment}"
 BUCKET_NAME="${OCI_BUCKET_NAME:-vscode-tunnel-bucket}"
 NAMESPACE=$(oci os ns get | jq -r '.data')
-TENANCY_OCID=$(oci iam tenancy get | jq -r '.data.id')
+TENANCY_OCID="$OCI_TENANCY_OCID"
 
 # Check if compartment exists
 COMPARTMENT_ID=$(oci iam compartment list --all \
