@@ -37,6 +37,13 @@ jobs:
       with:
         terraform_version: ${{ env.TERRAFORM_VERSION }}
 
+    - name: Install OCI backend plugin
+      run: |
+        mkdir -p ~/.terraform.d/plugins/github.com/oracle/oci/0.1.0/linux_amd64
+        curl -L -o ~/.terraform.d/plugins/github.com/oracle/oci/0.1.0/linux_amd64/terraform-provider-oci_v0.1.0 \
+          https://github.com/oracle/terraform-provider-oci/releases/download/v0.1.0/terraform-provider-oci_v0.1.0_linux_amd64
+        chmod +x ~/.terraform.d/plugins/github.com/oracle/oci/0.1.0/linux_amd64/terraform-provider-oci_v0.1.0
+
     - name: Configure OCI CLI
       env:
         OCI_PRIVATE_KEY: ${{ secrets.OCI_PRIVATE_KEY }}
