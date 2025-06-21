@@ -40,6 +40,9 @@ jobs:
         region=${{ secrets.OCI_REGION }}
         EOF
 
+    - name: Make init.sh executable
+      run: chmod +x ./init.sh
+
     - name: Run init script
       env:
         OCI_COMPARTMENT_NAME: ${{ vars.OCI_COMPARTMENT_NAME }}
