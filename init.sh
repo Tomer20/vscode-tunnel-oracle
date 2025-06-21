@@ -26,7 +26,7 @@ else
 fi
 
 # Check if bucket exists
-if oci os bucket get --name "$BUCKET_NAME" --namespace-name "$NAMESPACE" --compartment-id "$COMPARTMENT_ID" > /dev/null 2>&1; then
+if oci os bucket get --name "$BUCKET_NAME" --namespace-name "$NAMESPACE" > /dev/null 2>&1; then
   echo "Bucket already exists: $BUCKET_NAME"
 else
   echo "Creating bucket: $BUCKET_NAME"
