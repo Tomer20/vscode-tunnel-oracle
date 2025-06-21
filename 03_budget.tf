@@ -1,5 +1,5 @@
 resource "oci_limits_quota" "quota_policy" {
-  compartment_id = oci_identity_compartment.main_compartment.id
+  compartment_id = data.oci_identity_compartment.target.id
   name           = "${compartment_name}-restrictions"
   description    = "Restricts usage to specific Terraform-managed resources in ${compartment_name}"
   statements = [
@@ -15,11 +15,11 @@ resource "oci_limits_quota" "quota_policy" {
 }
 
 resource "oci_budget_budget" "free_tier_budget" {
-  compartment_id = oci_identity_compartment.main_compartment.id
+  compartment_id = data.oci_identity_compartment.target.id
   amount         = 0.00
   reset_period   = "MONTHLY"
   target_type    = "COMPARTMENT"
-  targets        = [oci_identity_compartment.main_compartment.id]
+  targets        = [data.oci_identity_compartment.target.id]
   display_name   = "free-tier-budget"
   description    = "Track usage to avoid exceeding free tier"
 }
@@ -31,6 +31,6 @@ resource "oci_budget_alert_rule" "free_tier_alert" {
   threshold          = 90
   threshold_type     = "PERCENTAGE"
   message            = "Free tier usage exceeded 90%"
-  recipients         = [var.alert_email]
+  recipients         = [var.budget_alert_email]
   description        = "Alert at 90% of free-tier threshold"
 }

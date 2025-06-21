@@ -3,9 +3,24 @@ name: Deploy Infrastructure
 on:
   workflow_dispatch:
 
+env:
+  TERRAFORM_VERSION: 1.2.2
+  OCI_TF_PROVIDER_VERSION: 7.5.0
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      TF_VAR_tenancy_ocid: ${{ secrets.OCI_TENANCY_OCID }}
+      TF_VAR_user_ocid: ${{ secrets.OCI_USER_OCID }}
+      TF_VAR_fingerprint: ${{ secrets.OCI_FINGERPRINT }}
+      TF_VAR_private_key_path: "~/.oci/oci_api_key.pem"
+      TF_VAR_region: ${{ secrets.OCI_REGION }}
+      TF_VAR_availability_domain: ${{ secrets.OCI_AVAILABILITY_DOMAIN }}
+      TF_VAR_compartment_name: ${{ vars.OCI_COMPARTMENT_NAME }}
+      TF_VAR_ssh_public_key: ${{ secrets.OCI_PUBLIC_KEY }}
+      TF_VAR_vscode_github_token: ${{ secrets.VSCODE_GITHUB_TOKEN }}
+      TF_VAR_budget_alert_email: ${{ secrets.BUDGET_ALERT_EMAIL }}
 
     steps:
     - name: Checkout repository
@@ -17,22 +32,28 @@ jobs:
         sudo apt-get install -y python3-pip jq unzip
         pip3 install oci-cli
 
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ env.TERRAFORM_VERSION }}
+
     - name: Configure OCI CLI
       env:
         OCI_PRIVATE_KEY: ${{ secrets.OCI_PRIVATE_KEY }}
       run: |
         mkdir -p ~/.oci
-        echo "${OCI_PRIVATE_KEY}" > ~/.oci/oci_api_key.pem
-        chmod 600 ~/.oci/oci_api_key.pem
+        echo "${OCI_PRIVATE_KEY}" > ${{ env.TF_VAR_private_key_path }}
+        chmod 600 ${{ env.TF_VAR_private_key_path }}
 
         cat > ~/.oci/config <<EOF
         [DEFAULT]
         user=${{ secrets.OCI_USER_OCID }}
         fingerprint=${{ secrets.OCI_FINGERPRINT }}
-        key_file=~/.oci/oci_api_key.pem
+        key_file=${{ env.TF_VAR_private_key_path }}
         tenancy=${{ secrets.OCI_TENANCY_OCID }}
         region=${{ secrets.OCI_REGION }}
         EOF
+        chmod 600 ~/.oci/config
 
     - name: Generate backend.tf
       run: |
@@ -44,6 +65,15 @@ jobs:
 
         cat > backend.tf <<EOF
         terraform {
+          required_version = ">= ${{ env.TERRAFORM_VERSION }}"
+
+          required_providers {
+            oci = {
+              source  = "oracle/oci"
+              version = "${{ env.OCI_TF_PROVIDER_VERSION }}"
+            }
+          }
+
           backend "oci" {
             bucket         = "${{ vars.OCI_BUCKET_NAME }}"
             namespace      = "${NS}"

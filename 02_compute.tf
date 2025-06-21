@@ -1,6 +1,6 @@
-resource "oci_core_instance" "tiny_instance" {
+resource "oci_core_instance" "tunnel_instance" {
   availability_domain = var.availability_domain
-  compartment_id      = oci_identity_compartment.main_compartment.id
+  compartment_id      = data.oci_identity_compartment.target.id
   display_name        = var.instance_name
   shape               = var.instance_type
 

@@ -21,19 +21,16 @@ variable "private_key_path" {
 variable "region" {
   description = "The OCI region to deploy into (e.g., eu-frankfurt-1)."
   type        = string
-  default     = "eu-frankfurt-1"
 }
 
 variable "availability_domain" {
-  description = "Availability domain name (e.g., eu-frankfurt-1-AD-1)."
+  description = "Availability domain name (e.g., EU-FRANKFURT-1-AD-1)."
   type        = string
-  default     = "EU-FRANKFURT-1-AD-1"
 }
 
 variable "compartment_name" {
   description = "The name of the compartment to be created."
   type        = string
-  default     = "vscode-tunnel-tiny-compartment"
 }
 
 variable "vcn_cidr_block" {
@@ -51,13 +48,13 @@ variable "subnet_cidr_block" {
 variable "vcn_display_name" {
   description = "Display name of the VCN."
   type        = string
-  default     = "vscode-tunnel-tiny-vcn"
+  default     = "vscode-tunnel-vcn"
 }
 
 variable "subnet_display_name" {
   description = "Display name of the subnet."
   type        = string
-  default     = "vscode-tunnel-tiny-private-subnet"
+  default     = "vscode-tunnel-private-subnet"
 }
 
 variable "instance_type" {
@@ -84,7 +81,7 @@ variable "vscode_github_token" {
   sensitive   = true
 }
 
-variable "alert_email" {
+variable "budget_alert_email" {
   description = "Email address to send budget alerts."
   type        = string
   sensitive   = true

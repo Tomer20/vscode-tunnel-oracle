@@ -1,18 +1,18 @@
 resource "oci_core_vcn" "main_vcn" {
-  compartment_id = oci_identity_compartment.main_compartment.id
+  compartment_id = data.oci_identity_compartment.target.id
   cidr_block     = var.vcn_cidr_block
   display_name   = var.vcn_display_name
   dns_label      = "vscodetunnel"
 }
 
 resource "oci_core_nat_gateway" "nat" {
-  compartment_id = oci_identity_compartment.main_compartment.id
+  compartment_id = data.oci_identity_compartment.target.id
   vcn_id         = oci_core_vcn.main_vcn.id
   display_name   = "vscodetunnel-nat"
 }
 
 resource "oci_core_route_table" "private_rt" {
-  compartment_id = oci_identity_compartment.main_compartment.id
+  compartment_id = data.oci_identity_compartment.target.id
   vcn_id         = oci_core_vcn.main_vcn.id
   display_name   = "private-rt"
 
@@ -24,7 +24,7 @@ resource "oci_core_route_table" "private_rt" {
 }
 
 resource "oci_core_security_list" "private_sg" {
-  compartment_id = oci_identity_compartment.main_compartment.id
+  compartment_id = data.oci_identity_compartment.target.id
   vcn_id         = oci_core_vcn.main_vcn.id
   display_name   = "private-sec-list"
 
@@ -44,7 +44,7 @@ resource "oci_core_security_list" "private_sg" {
 }
 
 resource "oci_core_subnet" "private_subnet" {
-  compartment_id              = oci_identity_compartment.main_compartment.id
+  compartment_id              = data.oci_identity_compartment.target.id
   vcn_id                      = oci_core_vcn.main_vcn.id
   cidr_block                  = var.subnet_cidr_block
   display_name                = var.subnet_display_name
