@@ -20,8 +20,7 @@ The GitHub Actions workflow:
 ### 1. OCI Setup
 
 - [Create an OCI account](https://www.oracle.com/cloud/free)
-- Create an IAM user (e.g. `github-actions`)
-- Generate and upload an API key for that user
+- Generate an API key for your user
 
 ---
 
