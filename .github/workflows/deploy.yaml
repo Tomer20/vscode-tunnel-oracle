@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  TERRAFORM_VERSION: 1.2.2
+  TERRAFORM_VERSION: 1.12.2
   OCI_TF_PROVIDER_VERSION: 7.5.0
 
 jobs:
@@ -37,13 +37,6 @@ jobs:
       with:
         terraform_version: ${{ env.TERRAFORM_VERSION }}
 
-    - name: Install OCI backend plugin
-      run: |
-        mkdir -p ~/.terraform.d/plugins/github.com/oracle/oci/0.1.0/linux_amd64
-        curl -L -o ~/.terraform.d/plugins/github.com/oracle/oci/0.1.0/linux_amd64/terraform-provider-oci_v0.1.0 \
-          https://github.com/oracle/terraform-provider-oci/releases/download/v0.1.0/terraform-provider-oci_v0.1.0_linux_amd64
-        chmod +x ~/.terraform.d/plugins/github.com/oracle/oci/0.1.0/linux_amd64/terraform-provider-oci_v0.1.0
-
     - name: Configure OCI CLI
       env:
         OCI_PRIVATE_KEY: ${{ secrets.OCI_PRIVATE_KEY }}
@@ -62,37 +55,22 @@ jobs:
         EOF
         chmod 600 ~/.oci/config
 
-    - name: Generate backend.tf
+    - name: Generate backend.tf variables
       run: |
-        NS=$(oci os ns get | jq -r '.data')
-        COMPARTMENT_ID=$(oci iam compartment list \
-          --name "${{ vars.OCI_COMPARTMENT_NAME }}" \
+        echo "OCI_NS=$(oci os ns get | jq -r '.data')" >> $GITHUB_ENV
+        echo "OCI_COMPARTMENT_ID=$(oci iam compartment list \
+          --name '${{ vars.OCI_COMPARTMENT_NAME }}' \
           --compartment-id ${{ secrets.OCI_TENANCY_OCID }} \
-          | jq -r '.data[0].id')
-
-        cat > backend.tf <<EOF
-        terraform {
-          required_version = ">= ${{ env.TERRAFORM_VERSION }}"
-
-          required_providers {
-            oci = {
-              source  = "oracle/oci"
-              version = "${{ env.OCI_TF_PROVIDER_VERSION }}"
-            }
-          }
-
-          backend "oci" {
-            bucket         = "${{ vars.OCI_BUCKET_NAME }}"
-            namespace      = "${NS}"
-            compartment_id = "${COMPARTMENT_ID}"
-            region         = "${{ secrets.OCI_REGION }}"
-            key            = "terraform.tfstate"
-          }
-        }
-        EOF
+          | jq -r '.data[0].id')" >> $GITHUB_ENV
 
     - name: Initialize Terraform
-      run: terraform init
+      run: |
+        terraform init \
+          -backend-config="bucket=${{ vars.OCI_BUCKET_NAME }}" \
+          -backend-config="namespace=${OCI_NS}" \
+          -backend-config="compartment_id=${OCI_COMPARTMENT_ID}" \
+          -backend-config="region=${{ secrets.OCI_REGION }}" \
+          -backend-config="key=terraform.tfstate"
 
     - name: Validate Terraform
       run: terraform validate
