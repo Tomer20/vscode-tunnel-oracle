@@ -58,17 +58,12 @@ jobs:
     - name: Generate backend.tf variables
       run: |
         echo "OCI_NS=$(oci os ns get | jq -r '.data')" >> $GITHUB_ENV
-        echo "OCI_COMPARTMENT_ID=$(oci iam compartment list \
-          --name '${{ vars.OCI_COMPARTMENT_NAME }}' \
-          --compartment-id ${{ secrets.OCI_TENANCY_OCID }} \
-          | jq -r '.data[0].id')" >> $GITHUB_ENV
 
     - name: Initialize Terraform
       run: |
         terraform init \
           -backend-config="bucket=${{ vars.OCI_BUCKET_NAME }}" \
           -backend-config="namespace=${OCI_NS}" \
-          -backend-config="compartment_id=${OCI_COMPARTMENT_ID}" \
           -backend-config="region=${{ secrets.OCI_REGION }}" \
           -backend-config="key=terraform.tfstate"
 
