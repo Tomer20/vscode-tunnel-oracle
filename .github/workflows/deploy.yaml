@@ -1,21 +1,15 @@
-name: Init OCI
+name: Deploy Infrastructure
 
 on:
   workflow_dispatch:
 
 jobs:
-  init-backend:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
+    - name: Checkout repository
       uses: actions/checkout@v3
-
-    - name: Set up Git credentials
-      uses: fregante/setup-git-user@v2
-      with:
-        name: github-actions
-        email: actions@github.com
 
     - name: Set up OCI CLI
       uses: oracle/oci-cli-action@v1.1.1
@@ -29,16 +23,13 @@ jobs:
     - name: Install jq
       run: sudo apt-get update && sudo apt-get install -y jq
 
-    - name: Run init script
-      env:
-        OCI_COMPARTMENT_NAME: ${{ vars.OCI_COMPARTMENT_NAME }}
-        OCI_BUCKET_NAME: ${{ vars.OCI_BUCKET_NAME }}
-      run: ./init.sh
-
     - name: Generate backend.tf
       run: |
         NS=$(oci os ns get | jq -r '.data')
-        COMPARTMENT_ID=$(oci iam compartment list --name "${{ vars.OCI_COMPARTMENT_NAME }}" --compartment-id ${{ secrets.OCI_TENANCY_OCID }} | jq -r '.data[0].id')
+        COMPARTMENT_ID=$(oci iam compartment list \
+          --name "${{ vars.OCI_COMPARTMENT_NAME }}" \
+          --compartment-id ${{ secrets.OCI_TENANCY_OCID }} \
+          | jq -r '.data[0].id')
 
         cat > backend.tf <<EOF
         terraform {
@@ -51,3 +42,15 @@ jobs:
           }
         }
         EOF
+
+    - name: Initialize Terraform
+      run: terraform init
+
+    - name: Validate Terraform
+      run: terraform validate
+
+    - name: Plan Terraform
+      run: terraform plan -out=tfplan
+
+    - name: Apply Terraform
+      run: terraform apply -auto-approve tfplan
