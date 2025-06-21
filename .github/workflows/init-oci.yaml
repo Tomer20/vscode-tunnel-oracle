@@ -17,37 +17,31 @@ jobs:
         name: github-actions
         email: actions@github.com
 
-    - name: Set up OCI CLI
-      uses: oracle/oci-cli-action@v1.1.1
-      with:
-        tenancy-ocid: ${{ secrets.OCI_TENANCY_OCID }}
-        user-ocid: ${{ secrets.OCI_USER_OCID }}
-        fingerprint: ${{ secrets.OCI_FINGERPRINT }}
-        private-key: ${{ secrets.OCI_PRIVATE_KEY }}
-        region: ${{ secrets.OCI_REGION }}
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-pip jq unzip
+        pip3 install oci-cli
 
-    - name: Install jq
-      run: sudo apt-get update && sudo apt-get install -y jq
+    - name: Configure OCI CLI
+      env:
+        OCI_PRIVATE_KEY: ${{ secrets.OCI_PRIVATE_KEY }}
+      run: |
+        mkdir -p ~/.oci
+        echo "${OCI_PRIVATE_KEY}" > ~/.oci/oci_api_key.pem
+        chmod 600 ~/.oci/oci_api_key.pem
+
+        cat > ~/.oci/config <<EOF
+        [DEFAULT]
+        user=${{ secrets.OCI_USER_OCID }}
+        fingerprint=${{ secrets.OCI_FINGERPRINT }}
+        key_file=~/.oci/oci_api_key.pem
+        tenancy=${{ secrets.OCI_TENANCY_OCID }}
+        region=${{ secrets.OCI_REGION }}
+        EOF
 
     - name: Run init script
       env:
         OCI_COMPARTMENT_NAME: ${{ vars.OCI_COMPARTMENT_NAME }}
         OCI_BUCKET_NAME: ${{ vars.OCI_BUCKET_NAME }}
       run: ./init.sh
-
-    - name: Generate backend.tf
-      run: |
-        NS=$(oci os ns get | jq -r '.data')
-        COMPARTMENT_ID=$(oci iam compartment list --name "${{ vars.OCI_COMPARTMENT_NAME }}" --compartment-id ${{ secrets.OCI_TENANCY_OCID }} | jq -r '.data[0].id')
-
-        cat > backend.tf <<EOF
-        terraform {
-          backend "oci" {
-            bucket         = "${{ vars.OCI_BUCKET_NAME }}"
-            namespace      = "${NS}"
-            compartment_id = "${COMPARTMENT_ID}"
-            region         = "${{ secrets.OCI_REGION }}"
-            key            = "terraform.tfstate"
-          }
-        }
-        EOF
