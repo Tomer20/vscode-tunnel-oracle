@@ -13,7 +13,7 @@ data "oci_identity_compartment" "target" {
   id = data.oci_identity_compartments.matching.compartments[0].id
 }
 
-data "oci_core_image" "ubuntu" {
+data "oci_core_images" "ubuntu" {
   compartment_id           = data.oci_identity_compartment.target.id
   operating_system         = "Canonical Ubuntu"
   operating_system_version = "22.04"

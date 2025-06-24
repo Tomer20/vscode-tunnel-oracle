@@ -18,7 +18,7 @@ resource "oci_core_instance" "tunnel_instance" {
 
   source_details {
     source_type               = "image"
-    image_id                  = data.oci_core_image.ubuntu.id
+    source_id                  = image_id = data.oci_core_images.ubuntu.images[0].id
     boot_volume_size_in_gbs   = 50
   }
 
