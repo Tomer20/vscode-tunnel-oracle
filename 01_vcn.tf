@@ -52,5 +52,5 @@ resource "oci_core_subnet" "private_subnet" {
   security_list_ids           = [oci_core_security_list.private_sg.id]
   prohibit_public_ip_on_vnic  = true
   dns_label                   = "privsub"
-  availability_domain         = var.availability_domain
+  availability_domain         = data.oci_identity_availability_domains.ads.availability_domains[0].name
 }

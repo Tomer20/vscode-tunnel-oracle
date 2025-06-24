@@ -23,11 +23,6 @@ variable "region" {
   type        = string
 }
 
-variable "availability_domain" {
-  description = "Availability domain name (e.g., EU-FRANKFURT-1-AD-1)."
-  type        = string
-}
-
 variable "compartment_name" {
   description = "The name of the compartment to be created."
   type        = string
