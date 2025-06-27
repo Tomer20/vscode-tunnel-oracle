@@ -6,7 +6,7 @@ resource "oci_core_instance" "tunnel_instance" {
 
   shape_config {
     ocpus         = 4
-    memory_in_gbs = 16
+    memory_in_gbs = 8
   }
 
   create_vnic_details {
