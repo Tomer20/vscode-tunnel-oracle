@@ -64,7 +64,7 @@ variable "instance_name" {
   default     = "vscode-tunnel-instance"
 }
 
-variable "ssh_public_key" {
+variable "compute_ssh_public_key" {
   description = "Raw SSH public key content."
   type        = string
   sensitive   = true

@@ -23,7 +23,7 @@ resource "oci_core_instance" "tunnel_instance" {
   }
 
   metadata = {
-    ssh_authorized_keys = var.ssh_public_key
+    ssh_authorized_keys = var.compute_ssh_public_key
     user_data           = base64encode(templatefile("${path.module}/cloud-init.yaml", {
       github_token = var.vscode_github_token
       instance_name = var.instance_name

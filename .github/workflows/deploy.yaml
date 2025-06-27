@@ -17,7 +17,7 @@ jobs:
       TF_VAR_private_key_path: "~/.oci/oci_api_key.pem"
       TF_VAR_region: ${{ secrets.OCI_REGION }}
       TF_VAR_compartment_name: ${{ vars.OCI_COMPARTMENT_NAME }}
-      TF_VAR_ssh_public_key: ${{ secrets.OCI_PUBLIC_KEY }}
+      TF_VAR_compute_ssh_public_key: ${{ secrets.COMPUTE_SSH_PUBLIC_KEY }}
       TF_VAR_vscode_github_token: ${{ secrets.VSCODE_GITHUB_TOKEN }}
       TF_VAR_budget_alert_email: ${{ secrets.BUDGET_ALERT_EMAIL }}
 
