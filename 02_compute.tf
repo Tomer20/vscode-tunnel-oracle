@@ -1,12 +1,12 @@
 resource "oci_core_instance" "tunnel_instance" {
-  availability_domain = data.oci_identity_availability_domains.ads.availability_domains[2].name
+  availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
   compartment_id      = data.oci_identity_compartment.target.id
   display_name        = var.instance_name
   shape               = var.instance_type
 
   shape_config {
     ocpus         = 4
-    memory_in_gbs = 24
+    memory_in_gbs = 16
   }
 
   create_vnic_details {
