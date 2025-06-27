@@ -15,17 +15,24 @@ COMPARTMENT_ID=$(oci iam compartment list --all \
   --compartment-id "$TENANCY_OCID" \
   | jq -r '.data[0].id')
 
-# Delete all objects and versions if the bucket exists
-if oci os bucket get --name "$BUCKET_NAME" --namespace-name "$NAMESPACE" > /dev/null 2>&1; then
-  echo "🗑 Deleting objects (including versions) from bucket: $BUCKET_NAME"
+echo "🧹 Deleting all objects and versions in bucket: $BUCKET_NAME"
+OBJECT_LIST_JSON=$(oci os object list \
+  --bucket-name "$BUCKET_NAME" \
+  --namespace-name "$NAMESPACE" \
+  --all \
+  --include-versions true 2>&1)
 
-  # Get list of all objects with versions
-  OBJECTS=$(oci os object list --bucket-name "$BUCKET_NAME" --namespace-name "$NAMESPACE" --all --include-versions true)
+if [[ $? -ne 0 ]]; then
+  echo "❌ Failed to list objects with versions:"
+  echo "$OBJECT_LIST_JSON"
+  exit 2
+fi
 
-  echo "$OBJECTS" | jq -c '.data[]' | while read -r OBJECT_ENTRY; do
-    OBJECT_NAME=$(echo "$OBJECT_ENTRY" | jq -r '.name')
-    VERSION_ID=$(echo "$OBJECT_ENTRY" | jq -r '.["version-id"] // empty')
+echo "$OBJECT_LIST_JSON" | jq -c '.data[]' | while read -r OBJECT_ENTRY; do
+  OBJECT_NAME=$(echo "$OBJECT_ENTRY" | jq -r '.name')
+  VERSION_ID=$(echo "$OBJECT_ENTRY" | jq -r '.["version-id"] // empty')
 
+  if [[ -n "$OBJECT_NAME" ]]; then
     if [[ -n "$VERSION_ID" ]]; then
       echo " - Deleting versioned object: $OBJECT_NAME (version: $VERSION_ID)"
       oci os object delete \
@@ -35,20 +42,15 @@ if oci os bucket get --name "$BUCKET_NAME" --namespace-name "$NAMESPACE" > /dev/
         --version-id "$VERSION_ID" \
         --force
     else
-      echo " - Deleting unversioned object: $OBJECT_NAME"
+      echo " - Deleting object without version: $OBJECT_NAME"
       oci os object delete \
         --bucket-name "$BUCKET_NAME" \
         --namespace-name "$NAMESPACE" \
         --name "$OBJECT_NAME" \
         --force
     fi
-  done
-
-  echo "📦 Deleting bucket: $BUCKET_NAME"
-  oci os bucket delete --name "$BUCKET_NAME" --namespace-name "$NAMESPACE" --force
-else
-  echo "Bucket $BUCKET_NAME does not exist, skipping."
-fi
+  fi
+done
 
 # Delete compartment if it exists
 if [[ -n "$COMPARTMENT_ID" && "$COMPARTMENT_ID" != "null" ]]; then
