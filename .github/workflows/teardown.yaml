@@ -1,4 +1,4 @@
-name: Teardown Infrastructure and OCI
+name: Teardown Infrastructure
 
 on:
   workflow_dispatch:
@@ -69,11 +69,8 @@ jobs:
     - name: Validate Terraform
       run: terraform validate
 
-    - name: Plan Terraform
-      run: terraform plan -out=tfplan
-
     - name: Apply Terraform
-      run: terraform destroy -auto-approve tfplan
+      run: terraform destroy -auto-approve
 
     - name: Make teardown.sh executable
       run: chmod +x ./teardown.sh
