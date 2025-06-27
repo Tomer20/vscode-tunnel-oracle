@@ -19,23 +19,29 @@ COMPARTMENT_ID=$(oci iam compartment list --all \
 if oci os bucket get --name "$BUCKET_NAME" --namespace-name "$NAMESPACE" > /dev/null 2>&1; then
   echo "🗑 Deleting objects (including versions) from bucket: $BUCKET_NAME"
 
-  OBJECTS=$(oci os object list --bucket-name "$BUCKET_NAME" --namespace-name "$NAMESPACE" --all \
-    | jq -r '.data[].name')
+  # Get list of all objects with versions
+  OBJECTS=$(oci os object list --bucket-name "$BUCKET_NAME" --namespace-name "$NAMESPACE" --all --include-versions true)
 
-  for OBJECT in $OBJECTS; do
-    echo " - Deleting object and all versions: $OBJECT"
-    # Get all versions of the object
-    VERSIONS=$(oci os object list --bucket-name "$BUCKET_NAME" --namespace-name "$NAMESPACE" --all --include-versions true \
-      | jq -r --arg name "$OBJECT" '.data[] | select(.name == $name) | .version-id')
+  echo "$OBJECTS" | jq -c '.data[]' | while read -r OBJECT_ENTRY; do
+    OBJECT_NAME=$(echo "$OBJECT_ENTRY" | jq -r '.name')
+    VERSION_ID=$(echo "$OBJECT_ENTRY" | jq -r '.["version-id"] // empty')
 
-    for VERSION_ID in $VERSIONS; do
+    if [[ -n "$VERSION_ID" ]]; then
+      echo " - Deleting versioned object: $OBJECT_NAME (version: $VERSION_ID)"
       oci os object delete \
         --bucket-name "$BUCKET_NAME" \
         --namespace-name "$NAMESPACE" \
-        --name "$OBJECT" \
+        --name "$OBJECT_NAME" \
         --version-id "$VERSION_ID" \
         --force
-    done
+    else
+      echo " - Deleting unversioned object: $OBJECT_NAME"
+      oci os object delete \
+        --bucket-name "$BUCKET_NAME" \
+        --namespace-name "$NAMESPACE" \
+        --name "$OBJECT_NAME" \
+        --force
+    fi
   done
 
   echo "📦 Deleting bucket: $BUCKET_NAME"
