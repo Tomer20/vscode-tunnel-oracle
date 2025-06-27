@@ -1,5 +1,5 @@
 resource "oci_core_instance" "tunnel_instance" {
-  availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
+  availability_domain = data.oci_identity_availability_domains.ads.availability_domains[1].name
   compartment_id      = data.oci_identity_compartment.target.id
   display_name        = var.instance_name
   shape               = var.instance_type
