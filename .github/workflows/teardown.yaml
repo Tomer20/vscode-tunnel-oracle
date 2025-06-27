@@ -8,7 +8,7 @@ env:
   OCI_TF_PROVIDER_VERSION: 7.5.0
 
 jobs:
-  deploy:
+  teardown:
     runs-on: ubuntu-latest
     env:
       TF_VAR_tenancy_ocid: ${{ secrets.OCI_TENANCY_OCID }}

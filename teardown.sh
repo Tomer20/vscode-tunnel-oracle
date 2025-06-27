@@ -15,19 +15,8 @@ COMPARTMENT_ID=$(oci iam compartment list --all \
   --compartment-id "$TENANCY_OCID" \
   | jq -r '.data[0].id')
 
-# Delete all objects (including versions) from the bucket
+# Delete bucket if it exists
 if oci os bucket get --name "$BUCKET_NAME" --namespace-name "$NAMESPACE" > /dev/null 2>&1; then
-  echo "🗑 Deleting objects from bucket: $BUCKET_NAME"
-
-  OBJECTS=$(oci os object list --bucket-name "$BUCKET_NAME" --namespace-name "$NAMESPACE" --all \
-    | jq -r '.data[].name')
-
-  for OBJECT in $OBJECTS; do
-    echo " - Deleting object: $OBJECT"
-    oci os object delete --bucket-name "$BUCKET_NAME" --namespace-name "$NAMESPACE" --name "$OBJECT" --force
-  done
-
-  # Delete bucket
   echo "📦 Deleting bucket: $BUCKET_NAME"
   oci os bucket delete --name "$BUCKET_NAME" --namespace-name "$NAMESPACE" --force
 else
