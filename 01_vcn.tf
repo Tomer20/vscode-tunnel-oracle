@@ -46,7 +46,7 @@ resource "oci_core_security_list" "private_sg" {
 resource "oci_core_subnet" "private_subnet" {
   compartment_id              = data.oci_identity_compartment.target.id
   vcn_id                      = oci_core_vcn.main_vcn.id
-  cidr_block                  = var.subnet_cidr_block
+  cidr_block                  = var.private_subnet_cidr_block
   display_name                = var.subnet_display_name
   route_table_id              = oci_core_route_table.private_rt.id
   security_list_ids           = [oci_core_security_list.private_sg.id]

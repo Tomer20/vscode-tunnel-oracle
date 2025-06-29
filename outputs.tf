@@ -38,6 +38,42 @@ output "instance_private_ip" {
   value       = oci_core_instance.tunnel_instance.private_ip
 }
 
+output "internet_gateway_id" {
+  description = "OCID of the Internet Gateway"
+  value       = oci_core_internet_gateway.igw[0].id
+  condition   = var.bastion_enabled
+}
+
+output "public_route_table_id" {
+  description = "OCID of the public route table"
+  value       = oci_core_route_table.public_rt[0].id
+  condition   = var.bastion_enabled
+}
+
+output "public_security_list_id" {
+  description = "OCID of the public security list"
+  value       = oci_core_security_list.public_sg[0].id
+  condition   = var.bastion_enabled
+}
+
+output "public_subnet_id" {
+  description = "OCID of the public subnet"
+  value       = oci_core_subnet.public_subnet[0].id
+  condition   = var.bastion_enabled
+}
+
+output "bastion_id" {
+  description = "OCID of the OCI Bastion service"
+  value       = oci_bastion_bastion.bastion[0].id
+  condition   = var.bastion_enabled
+}
+
+output "bastion_name" {
+  description = "Name of the Bastion"
+  value       = oci_bastion_bastion.bastion[0].name
+  condition   = var.bastion_enabled
+}
+
 # output "quota_policy_id" {
 #   description = "OCID of the quota policy applied to the compartment"
 #   value       = oci_limits_quota.quota_policy.id

@@ -22,6 +22,20 @@ resource "oci_core_instance" "tunnel_instance" {
     boot_volume_size_in_gbs   = 50
   }
 
+  launch_options {
+    boot_volume_type                    = "PARAVIRTUALIZED"
+    network_type                        = "PARAVIRTUALIZED"
+    is_pv_encryption_in_transit_enabled = true
+    firmware                            = "UEFI_64"
+    is_secure_boot_enabled              = true
+    is_measured_boot_enabled            = true
+    is_trusted_platform_module_enabled  = true
+  }
+
+  metadata_service_options {
+    are_legacy_imds_endpoints_disabled = true
+  }
+
   metadata = {
     ssh_authorized_keys = var.compute_ssh_public_key
     user_data           = base64encode(templatefile("${path.module}/cloud-init.yaml", {

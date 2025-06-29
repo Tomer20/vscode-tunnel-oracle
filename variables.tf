@@ -29,15 +29,37 @@ variable "compartment_name" {
 }
 
 variable "vcn_cidr_block" {
-  description = "CIDR block for the VCN."
+  description = "Minimal VCN CIDR block."
+  type        = string
+  default     = "10.0.0.0/29"
+}
+
+variable "private_subnet_cidr_block" {
+  description = "Private subnet CIDR."
   type        = string
   default     = "10.0.0.0/30"
 }
 
-variable "subnet_cidr_block" {
-  description = "CIDR block for the subnet."
+variable "public_subnet_cidr_block" {
+  description = "Public subnet CIDR."
   type        = string
-  default     = "10.0.0.0/30"
+  default     = "10.0.0.4/30"
+}
+
+variable "bastion_enabled" {
+  description = "Whether to enable the OCI Bastion service"
+  type        = bool
+  default     = true
+}
+
+variable "my_public_ip" {
+  description = "Your home or office public IPv4 address (used to restrict SSH/Bastion access)."
+  type        = string
+  default     = "0.0.0.0"
+  validation {
+    condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}$", var.my_public_ip))
+    error_message = "The value must be a valid IPv4 address."
+  }
 }
 
 variable "vcn_display_name" {
