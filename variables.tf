@@ -43,7 +43,7 @@ variable "private_subnet_cidr_block" {
 variable "public_subnet_cidr_block" {
   description = "Public subnet CIDR."
   type        = string
-  default     = "10.0.0.4/29"
+  default     = "10.0.0.8/29"
 }
 
 variable "bastion_enabled" {
