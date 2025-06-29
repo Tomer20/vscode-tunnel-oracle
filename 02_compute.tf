@@ -36,7 +36,7 @@ resource "oci_core_instance" "tunnel_instance" {
     is_trusted_platform_module_enabled  = true
   }
 
-  metadata_service_options {
+  instance_options {
     are_legacy_imds_endpoints_disabled = true
   }
 

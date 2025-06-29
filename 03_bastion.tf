@@ -46,7 +46,7 @@ resource "oci_core_subnet" "public_subnet" {
   vcn_id                      = oci_core_vcn.main_vcn.id
   cidr_block                  = var.public_subnet_cidr_block
   display_name                = "bastion-public-subnet"
-  route_table_id              = oci_core_route_table.public_rt.id
+  route_table_id              = oci_core_route_table.public_rt[0].id
   security_list_ids           = [oci_core_security_list.public_sg[0].id]
   prohibit_public_ip_on_vnic  = false
   dns_label                   = "pubsub"
