@@ -53,12 +53,12 @@ variable "bastion_enabled" {
 }
 
 variable "my_public_ip_cidr" {
-  description = "Your home or office public IPv4 address block (used to restrict SSH/Bastion access)."
+  description = "Your home or office public IPv4 address in CIDR notation (e.g., 203.0.113.42/32)."
   type        = string
-  default     = "0.0.0.0/0"
+  default     = "203.0.113.42/32"
   validation {
-    condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}$", var.my_public_ip))
-    error_message = "The value must be a valid IPv4 address."
+    condition = can(cidrhost(var.my_public_ip_cidr, 0))
+    error_message = "The value must be a valid IPv4 CIDR block, e.g., 203.0.113.42/32."
   }
 }
 
