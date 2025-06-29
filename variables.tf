@@ -31,7 +31,7 @@ variable "compartment_name" {
 variable "vcn_cidr_block" {
   description = "Minimal VCN CIDR block."
   type        = string
-  default     = "10.0.0.0/29"
+  default     = "10.0.0.0/28"
 }
 
 variable "private_subnet_cidr_block" {
@@ -43,7 +43,7 @@ variable "private_subnet_cidr_block" {
 variable "public_subnet_cidr_block" {
   description = "Public subnet CIDR."
   type        = string
-  default     = "10.0.0.4/30"
+  default     = "10.0.0.4/29"
 }
 
 variable "bastion_enabled" {
