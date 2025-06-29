@@ -4,7 +4,28 @@ package_upgrade: true
 packages:
   - curl
   - wget
+  - tar
+
+write_files:
+  - path: /home/ubuntu/setup-tunnel.sh
+    permissions: '0755'
+    owner: ubuntu:ubuntu
+    content: |
+      #!/bin/bash
+      set -e
+
+      export GITHUB_TOKEN="${github_token}"
+      export INSTANCE_NAME="${instance_name}"
+
+      cd /home/ubuntu
+
+      # Download and extract VS Code CLI for Linux ARM64
+      curl -L "https://code.visualstudio.com/sha/download?build=stable&os=cli-linux-arm64" --output vscode_cli.tar.gz
+      tar -xf vscode_cli.tar.gz
+      rm vscode_cli.tar.gz
+
+      # Run the tunnel
+      ./code tunnel --accept-server-license-terms --token "$GITHUB_TOKEN" --name "$INSTANCE_NAME"
 
 runcmd:
-  - curl -fsSL https://aka.ms/install-vscode-server/setup.sh | bash
-  - su - ubuntu -c "code tunnel --accept-server-license-terms --token '${github_token}' --name '${instance_name}'"
+  - [ su, - ubuntu, -c, "/home/ubuntu/setup-tunnel.sh" ]
