@@ -52,10 +52,10 @@ variable "bastion_enabled" {
   default     = true
 }
 
-variable "my_public_ip" {
-  description = "Your home or office public IPv4 address (used to restrict SSH/Bastion access)."
+variable "my_public_ip_cidr" {
+  description = "Your home or office public IPv4 address block (used to restrict SSH/Bastion access)."
   type        = string
-  default     = "0.0.0.0"
+  default     = "0.0.0.0/0"
   validation {
     condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}$", var.my_public_ip))
     error_message = "The value must be a valid IPv4 address."

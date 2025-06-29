@@ -32,7 +32,7 @@ resource "oci_core_security_list" "public_sg" {
 
   ingress_security_rules {
     protocol = "6"  # TCP
-    source   = var.my_public_ip
+    source   = var.my_public_ip_cidr
     tcp_options {
       min = 22
       max = 22
@@ -61,6 +61,6 @@ resource "oci_bastion_bastion" "bastion" {
   name = "bastion-service"
   bastion_type = "STANDARD"
 
-  client_cidr_block_allow_list = [var.my_public_ip]
+  client_cidr_block_allow_list = [var.my_public_ip_cidr]
   max_session_ttl_in_seconds = 10800 # 3 hours
 }
