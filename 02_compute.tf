@@ -29,12 +29,12 @@ resource "oci_core_instance" "tunnel_instance" {
     firmware                            = "UEFI_64"
   }
 
-  platform_config {
-    type                                = "ARM_VM"
-    is_secure_boot_enabled              = true
-    is_measured_boot_enabled            = true
-    is_trusted_platform_module_enabled  = true
-  }
+  # platform_config {
+  #   type                                = "ARM_VM"
+  #   is_secure_boot_enabled              = true
+  #   is_measured_boot_enabled            = true
+  #   is_trusted_platform_module_enabled  = true
+  # }
 
   instance_options {
     are_legacy_imds_endpoints_disabled = true
