@@ -27,6 +27,10 @@ resource "oci_core_instance" "tunnel_instance" {
     network_type                        = "PARAVIRTUALIZED"
     is_pv_encryption_in_transit_enabled = true
     firmware                            = "UEFI_64"
+  }
+
+  platform_config {
+    type                                = "ARM_VM"
     is_secure_boot_enabled              = true
     is_measured_boot_enabled            = true
     is_trusted_platform_module_enabled  = true
