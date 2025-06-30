@@ -27,6 +27,22 @@ After the secrets and variables are added:
 
 ---
 
+## Manual Steps After Launch
+
+1. Login to OCI and create bastion session. Copy the SSH command.
+2. SSH to the bastion server with the copied command.
+3. Run
+
+```
+./code tunnel service install --accept-server-license-terms --name "${INSTANCE_NAME}"
+
+# Enable linger so the tunnel keeps running after logout
+loginctl enable-linger $USER
+```
+4. Login from your desired remote machine.
+
+---
+
 ## 📬 Questions? Having trouble?
 
 Open a GitHub Issue.

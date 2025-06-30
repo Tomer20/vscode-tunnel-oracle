@@ -6,29 +6,10 @@ packages:
   - wget
   - tar
   - oracle-cloud-agent
-
-write_files:
-  - path: /home/ubuntu/setup-tunnel.sh
-    permissions: '0755'
-    owner: ubuntu:ubuntu
-    content: |
-      #!/bin/bash
-      set -euxo pipefail
-
-      export GITHUB_TOKEN="${github_token}"
-      export INSTANCE_NAME="${instance_name}"
-
-      cd /home/ubuntu
-
-      # Download and extract VS Code CLI for Linux ARM64
-      curl -L "https://code.visualstudio.com/sha/download?build=stable&os=cli-linux-arm64" --output vscode_cli.tar.gz
-      tar -xf vscode_cli.tar.gz
-      rm vscode_cli.tar.gz
-
-      # Run the tunnel
-      ./code tunnel --accept-server-license-terms --token "$GITHUB_TOKEN" --name "$INSTANCE_NAME"
-
 runcmd:
   - systemctl enable oracle-cloud-agent
   - systemctl start oracle-cloud-agent
-  - su - ubuntu -c "/home/ubuntu/setup-tunnel.sh"
+  - cd /home/ubuntu
+  - curl -L "https://update.code.visualstudio.com/latest/cli-linux-arm64/stable" -o vscode_cli.tar.gz
+  - tar -xf vscode_cli.tar.gz
+  - chown -R ubuntu:ubuntu /home/ubuntu
