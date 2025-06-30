@@ -40,6 +40,20 @@ resource "oci_core_instance" "tunnel_instance" {
     are_legacy_imds_endpoints_disabled = true
   }
 
+  dynamic "agent_config" {
+    for_each = var.bastion_enabled ? [1] : []
+
+    content {
+      is_management_disabled = false
+      is_monitoring_disabled = false
+
+      plugins_config {
+        name          = "Bastion"
+        desired_state = "ENABLED"
+      }
+    }
+  }
+
   metadata = {
     ssh_authorized_keys = var.compute_ssh_public_key
     user_data           = base64encode(templatefile("${path.module}/cloud-init.yaml", {
