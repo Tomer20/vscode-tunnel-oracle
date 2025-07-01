@@ -34,7 +34,7 @@ After the secrets and variables are added:
 3. Run
 
 ```
-./code tunnel service install --accept-server-license-terms --name "${INSTANCE_NAME}"
+code tunnel service install --accept-server-license-terms --name "${INSTANCE_NAME}"
 
 # Enable linger so the tunnel keeps running after logout
 loginctl enable-linger $USER
