@@ -1,11 +1,3 @@
-git config --global user.name "Your Name"
-git config --global user.email "your@email.com"
-github auth login
-code tunnel service install --accept-server-license-terms --name "${INSTANCE_NAME}"
-
-# Enable linger so the tunnel keeps running after logout
-loginctl enable-linger $USER
-```
 # VSCode Tunnel on Oracle Cloud (OCI Free Tier)
 
 > Minimal, automated, and free remote dev environment using VS Code Tunnel on Oracle Cloud Free Tier. Deploys a private VCN, NAT gateway, and compute instance via GitHub Actions and Terraform.
