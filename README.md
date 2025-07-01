@@ -1,54 +1,67 @@
-# 🚀 VSCode Tunnel on Oracle Cloud Infrastructure (OCI)
-
-This repository provisions a **minimal VCN** with a **private subnet**, **NAT gateway**, and all required routing and security using **Oracle Cloud Free Tier** — fully automated via **GitHub Actions**.
-
-This project was crested to support **free** remote development using [VSCode web](https://vscode.dev) with the most powerful infra.
-
----
-
-## ✅ Features
-
-- Init OCI compartment
-- Terraform:
-   - Builds a **VCN** with a `/30` CIDR block for minimal usage
-   - Sets up a **private subnet**
-   - Provisions a **NAT Gateway** for outbound access
-   - Adds **default security list and routing**
-   - Free tier compute instance ready for VS Code Tunnel.
-
----
-
-## ⚙️ How to Deploy (Fully Automated)
-
-After the secrets and variables are added:
-
-1. [Run the init script](./docs/Init.md)
-2. [Deploy the solution via Terraform](./docs/Deploy.md)
-
----
-
-## Manual Steps After Launch
-
-1. Login to OCI and create bastion session. Copy the SSH command.
-2. SSH to the bastion server with the copied command.
-3. Run
-
-```
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+github auth login
 code tunnel service install --accept-server-license-terms --name "${INSTANCE_NAME}"
 
 # Enable linger so the tunnel keeps running after logout
 loginctl enable-linger $USER
 ```
-4. Login from your desired remote machine.
+# VSCode Tunnel on Oracle Cloud (OCI Free Tier)
+
+> Minimal, automated, and free remote dev environment using VS Code Tunnel on Oracle Cloud Free Tier. Deploys a private VCN, NAT gateway, and compute instance via GitHub Actions and Terraform.
 
 ---
 
-## 📬 Questions? Having trouble?
+## Features
 
-Open a GitHub Issue.
+- One-click deploy with GitHub Actions
+- Minimal VCN (`/30` CIDR), private subnet, NAT gateway
+- Default security lists and routing
+- Free tier compute instance for VS Code Tunnel
+- Automated OCI compartment and bucket setup
+- Budget alert email support
 
 ---
 
-## 📝 License
+## Quick Start
 
-[MIT](./LICENSE).
+1. **Configure GitHub Secrets/Variables:**
+   - `OCI_TENANCY_OCID`, `OCI_USER_OCID`, `OCI_FINGERPRINT`, `OCI_REGION`, `OCI_PRIVATE_KEY`, `MY_PUBLIC_IP_CIDR`, `COMPUTE_SSH_PUBLIC_KEY`, `VSCODE_GITHUB_TOKEN`, `BUDGET_ALERT_EMAIL` (secrets)
+   - `OCI_COMPARTMENT_NAME`, `OCI_BUCKET_NAME` (variables)
+
+2. **Run the Deploy Action:**
+   - Go to GitHub Actions → Deploy Infrastructure → Run workflow
+
+3. **Post-Deploy (Manual):**
+   - Login to OCI, create a Bastion session, copy the SSH command
+   - SSH to the bastion server
+   - On the server:
+     ```sh
+     code tunnel service install --accept-server-license-terms --name "${INSTANCE_NAME}"
+     loginctl enable-linger $USER
+     ```
+
+---
+
+## Useful Commands
+
+```sh
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+gh auth login
+```
+
+---
+
+## File Overview
+
+- `01_vcn.tf`, `02_compute.tf`, ...: Terraform modules
+- `init.sh`: Initializes OCI resources
+- `cloud-init.yaml`: Cloud-init for compute instance
+- `.github/workflows/deploy.yaml`: GitHub Actions automation
+
+---
+
+## License
+
+[MIT](./LICENSE)
