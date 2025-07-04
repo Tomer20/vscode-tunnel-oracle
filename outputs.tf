@@ -68,17 +68,17 @@ output "bastion_name" {
   value       = var.bastion_enabled ? oci_bastion_bastion.bastion[0].name : null
 }
 
-# output "quota_policy_id" {
-#   description = "OCID of the quota policy applied to the compartment"
-#   value       = oci_limits_quota.quota_policy.id
-# }
+output "quota_policy_id" {
+  description = "OCID of the quota policy applied to the compartment"
+  value       = var.enable_strict_limits ? oci_limits_quota.quota_policy[0].id : null
+}
 
-# output "budget_id" {
-#   description = "OCID of the created budget"
-#   value       = oci_budget_budget.free_tier_budget.id
-# }
+output "budget_id" {
+  description = "OCID of the created budget"
+  value       = oci_budget_budget.free_tier_budget.id
+}
 
-# output "budget_alert_id" {
-#   description = "OCID of the budget alert rule"
-#   value       = oci_budget_alert_rule.free_tier_alert.id
-# }
+output "budget_alert_id" {
+  description = "OCID of the budget alert rule"
+  value       = oci_budget_alert_rule.free_tier_alert.id
+}

@@ -1,5 +1,5 @@
 resource "oci_core_internet_gateway" "igw" {
-  count = var.bastion_enabled ? 1 : 0
+  count          = var.bastion_enabled ? 1 : 0
   compartment_id = data.oci_identity_compartment.target.id
   vcn_id         = oci_core_vcn.main_vcn.id
   display_name   = "vscodetunnel-igw"
@@ -7,7 +7,7 @@ resource "oci_core_internet_gateway" "igw" {
 }
 
 resource "oci_core_route_table" "public_rt" {
-  count = var.bastion_enabled ? 1 : 0
+  count          = var.bastion_enabled ? 1 : 0
   compartment_id = data.oci_identity_compartment.target.id
   vcn_id         = oci_core_vcn.main_vcn.id
   display_name   = "public-rt"
@@ -20,7 +20,7 @@ resource "oci_core_route_table" "public_rt" {
 }
 
 resource "oci_core_security_list" "public_sg" {
-  count = var.bastion_enabled ? 1 : 0
+  count          = var.bastion_enabled ? 1 : 0
   compartment_id = data.oci_identity_compartment.target.id
   vcn_id         = oci_core_vcn.main_vcn.id
   display_name   = "public-sec-list"
@@ -31,7 +31,7 @@ resource "oci_core_security_list" "public_sg" {
   }
 
   ingress_security_rules {
-    protocol = "6"  # TCP
+    protocol = "6" # TCP
     source   = var.my_public_ip_cidr
     tcp_options {
       min = 22
@@ -41,26 +41,26 @@ resource "oci_core_security_list" "public_sg" {
 }
 
 resource "oci_core_subnet" "public_subnet" {
-  count = var.bastion_enabled ? 1 : 0
-  compartment_id              = data.oci_identity_compartment.target.id
-  vcn_id                      = oci_core_vcn.main_vcn.id
-  cidr_block                  = var.public_subnet_cidr_block
-  display_name                = "bastion-public-subnet"
-  route_table_id              = oci_core_route_table.public_rt[0].id
-  security_list_ids           = [oci_core_security_list.public_sg[0].id]
-  prohibit_public_ip_on_vnic  = false
-  dns_label                   = "pubsub"
-  availability_domain         = data.oci_identity_availability_domains.ads.availability_domains[0].name
+  count                      = var.bastion_enabled ? 1 : 0
+  compartment_id             = data.oci_identity_compartment.target.id
+  vcn_id                     = oci_core_vcn.main_vcn.id
+  cidr_block                 = var.public_subnet_cidr_block
+  display_name               = "bastion-public-subnet"
+  route_table_id             = oci_core_route_table.public_rt[0].id
+  security_list_ids          = [oci_core_security_list.public_sg[0].id]
+  prohibit_public_ip_on_vnic = false
+  dns_label                  = "pubsub"
+  availability_domain        = data.oci_identity_availability_domains.ads.availability_domains[0].name
 }
 
 resource "oci_bastion_bastion" "bastion" {
-  count = var.bastion_enabled ? 1 : 0
+  count            = var.bastion_enabled ? 1 : 0
   compartment_id   = data.oci_identity_compartment.target.id
   target_subnet_id = oci_core_subnet.public_subnet[0].id
 
-  name = "bastion-service"
+  name         = "bastion-service"
   bastion_type = "STANDARD"
 
   client_cidr_block_allow_list = [var.my_public_ip_cidr]
-  max_session_ttl_in_seconds = 10800 # 3 hours
+  max_session_ttl_in_seconds   = 10800 # 3 hours
 }

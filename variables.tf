@@ -57,7 +57,7 @@ variable "my_public_ip_cidr" {
   type        = string
   default     = "203.0.113.42/32"
   validation {
-    condition = can(cidrhost(var.my_public_ip_cidr, 0))
+    condition     = can(cidrhost(var.my_public_ip_cidr, 0))
     error_message = "The value must be a valid IPv4 CIDR block, e.g., 203.0.113.42/32."
   }
 }
@@ -74,12 +74,6 @@ variable "subnet_display_name" {
   default     = "vscode-tunnel-private-subnet"
 }
 
-variable "instance_type" {
-  description = "Compute instance type to use."
-  type        = string
-  default     = "VM.Standard.A1.Flex"
-}
-
 variable "instance_name" {
   description = "Display name for the instance."
   type        = string
@@ -92,14 +86,14 @@ variable "compute_ssh_public_key" {
   sensitive   = true
 }
 
-variable "vscode_github_token" {
-  description = "GitHub personal access token for VS Code tunnel authentication."
-  type        = string
-  sensitive   = true
-}
-
 variable "budget_alert_email" {
   description = "Email address to send budget alerts."
   type        = string
   sensitive   = true
+}
+
+variable "enable_strict_limits" {
+  description = "Set to true to enforce strict resource quotas in the compartment. When false, no quota restrictions will be applied."
+  type        = bool
+  default     = true
 }

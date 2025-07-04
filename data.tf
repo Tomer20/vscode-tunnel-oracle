@@ -1,7 +1,7 @@
 data "oci_identity_compartments" "matching" {
-  compartment_id = var.tenancy_ocid
-  name           = var.compartment_name
-  access_level   = "ANY"
+  compartment_id            = var.tenancy_ocid
+  name                      = var.compartment_name
+  access_level              = "ANY"
   compartment_id_in_subtree = true
   filter {
     name   = "name"
