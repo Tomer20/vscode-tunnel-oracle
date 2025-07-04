@@ -6,11 +6,13 @@ variable "tenancy_ocid" {
 variable "user_ocid" {
   description = "The OCID of the OCI user for authentication."
   type        = string
+  sensitive   = true
 }
 
 variable "fingerprint" {
   description = "The fingerprint for the public key used for OCI CLI."
   type        = string
+  sensitive   = true
 }
 
 variable "private_key_path" {
