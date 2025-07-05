@@ -1,0 +1,52 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "labels": ["dependencies"],
+  "timezone": "GMT",
+  "schedule": ["after 9am on Monday"],
+  "dependencyDashboard": true,
+
+  "packageRules": [
+    {
+      "matchDatasources": ["terraform"],
+      "groupName": "Terraform dependencies",
+      "matchPackagePatterns": ["*"],
+      "groupSlug": "terraform-group"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "groupName": "Docker base images"
+    },
+    {
+      "matchManagers": ["regex"],
+      "matchPackagePatterns": ["TERRAFORM_VERSION"],
+      "groupName": "Terraform version in GitHub workflows"
+    },
+    {
+      "matchManagers": ["regex"],
+      "matchPackagePatterns": ["OCI_TF_PROVIDER_VERSION"],
+      "groupName": "OCI provider version in GitHub workflows"
+    }
+  ],
+
+  "regexManagers": [
+    {
+      "fileMatch": ["^backend\\.tf$"],
+      "matchStrings": [
+        "required_version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "terraform",
+      "versioningTemplate": "semver"
+    },
+    {
+      "fileMatch": ["\\.github\\/workflows\\/.*\\.ya?ml"],
+      "matchStrings": [
+        "TERRAFORM_VERSION:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+        "OCI_TF_PROVIDER_VERSION:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "datasourceTemplate": "terraform",
+      "versioningTemplate": "semver"
+    }
+  ]
+}
