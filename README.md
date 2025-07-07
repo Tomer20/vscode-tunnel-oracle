@@ -1,6 +1,6 @@
 # VSCode Tunnel on Oracle Cloud (OCI Free Tier)
 
-> Minimal, automated, and free remote dev environment using VS Code Tunnel on Oracle Cloud Free Tier. Deploys a private VCN, NAT gateway, and compute instance via GitHub Actions and Terraform.
+Minimal, automated, and free remote dev environment using VS Code Tunnel on Oracle Cloud Free Tier. Deploys a private VCN, NAT gateway, and compute instance via GitHub Actions and Terraform.
 
 ---
 
@@ -29,19 +29,12 @@
    - SSH to the bastion server
    - On the server:
      ```sh
+     git config --global user.name "Your Name"
+     git config --global user.email "your@email.com"
+     gh auth login
      code tunnel service install --accept-server-license-terms --name "${INSTANCE_NAME}"
      loginctl enable-linger $USER
      ```
-
----
-
-## Useful Commands
-
-```sh
-git config --global user.name "Your Name"
-git config --global user.email "your@email.com"
-gh auth login
-```
 
 ---
 
