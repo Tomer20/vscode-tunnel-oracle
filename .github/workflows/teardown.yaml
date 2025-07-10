@@ -3,6 +3,9 @@ name: Teardown Infrastructure
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 env:
   TERRAFORM_VERSION: 1.12.2
 
