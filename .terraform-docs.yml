@@ -1,4 +1,5 @@
 formatter: markdown table
 output-file: README.md
-output-mode: replace
-recursive: false
+output-mode: inject
+recursive:
+  enabled: false
