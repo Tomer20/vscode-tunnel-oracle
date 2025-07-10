@@ -4,89 +4,34 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: write
+  pull-requests: write
+
 env:
   TERRAFORM_VERSION: 1.12.2
-  OCI_CLI_VERSION: 3.62.0
-  OCI_PRIVATE_KEY_PATH: "~/.oci/oci_api_key.pem"
-  OCI_BUCKET_NAME: ${{ vars.OCI_BUCKET_NAME }}
-  OCI_REGION: ${{ secrets.OCI_REGION }}
 
 jobs:
-  terraform-validate:
-    name: Terraform Validate
+  pre-commit:
+    name: Terraform Pre-commit Checks
     runs-on: ubuntu-latest
-    env:
-      TERRAFORM_VERSION: ${{ env.TERRAFORM_VERSION }}
-      OCI_CLI_VERSION: ${{ env.OCI_CLI_VERSION }}
-      OCI_PRIVATE_KEY: ${{ secrets.OCI_PRIVATE_KEY }}
-      TF_VAR_tenancy_ocid: ${{ secrets.OCI_TENANCY_OCID }}
-      TF_VAR_user_ocid: ${{ secrets.OCI_USER_OCID }}
-      TF_VAR_fingerprint: ${{ secrets.OCI_FINGERPRINT }}
-      TF_VAR_private_key_path: ${{ env.OCI_PRIVATE_KEY_PATH }}
-      TF_VAR_region: ${{ secrets.OCI_REGION }}
-      TF_VAR_compartment_name: ${{ vars.OCI_COMPARTMENT_NAME }}
-      TF_VAR_my_public_ip_cidr: ${{ secrets.MY_PUBLIC_IP_CIDR }}
-      TF_VAR_compute_ssh_public_key: ${{ secrets.COMPUTE_SSH_PUBLIC_KEY }}
-      TF_VAR_budget_alert_email: ${{ secrets.BUDGET_ALERT_EMAIL }}
     steps:
-    - name: OCI Terraform Setup
-      uses: ./.github/actions/oci-terraform-setup
-    - name: Terraform Validate
-      uses: reviewdog/action-terraform-validate@v1.16.1
-      with:
-        github_token: ${{ secrets.github_token }}
-        reporter: github-pr-check
-        level: warning
-
-  checkov:
-    name: Checkov
-    runs-on: ubuntu-latest
-    env:
-      TERRAFORM_VERSION: ${{ env.TERRAFORM_VERSION }}
-      OCI_CLI_VERSION: ${{ env.OCI_CLI_VERSION }}
-      OCI_PRIVATE_KEY: ${{ secrets.OCI_PRIVATE_KEY }}
-      TF_VAR_tenancy_ocid: ${{ secrets.OCI_TENANCY_OCID }}
-      TF_VAR_user_ocid: ${{ secrets.OCI_USER_OCID }}
-      TF_VAR_fingerprint: ${{ secrets.OCI_FINGERPRINT }}
-      TF_VAR_private_key_path: ${{ env.OCI_PRIVATE_KEY_PATH }}
-      TF_VAR_region: ${{ secrets.OCI_REGION }}
-      TF_VAR_compartment_name: ${{ vars.OCI_COMPARTMENT_NAME }}
-      TF_VAR_my_public_ip_cidr: ${{ secrets.MY_PUBLIC_IP_CIDR }}
-      TF_VAR_compute_ssh_public_key: ${{ secrets.COMPUTE_SSH_PUBLIC_KEY }}
-      TF_VAR_budget_alert_email: ${{ secrets.BUDGET_ALERT_EMAIL }}
-    steps:
-    - name: OCI Terraform Setup
-      uses: ./.github/actions/oci-terraform-setup
-    - name: Run Checkov
-      uses: bridgecrewio/checkov-action@master
-      with:
-        directory: .
-
-  terraform-format-and-docs:
-    needs: [terraform-validate, checkov]
-    name: Terraform Format and Docs
-    runs-on: ubuntu-latest
-    env:
-      TERRAFORM_VERSION: ${{ env.TERRAFORM_VERSION }}
-      OCI_CLI_VERSION: ${{ env.OCI_CLI_VERSION }}
-      OCI_PRIVATE_KEY: ${{ secrets.OCI_PRIVATE_KEY }}
-      TF_VAR_tenancy_ocid: ${{ secrets.OCI_TENANCY_OCID }}
-      TF_VAR_user_ocid: ${{ secrets.OCI_USER_OCID }}
-      TF_VAR_fingerprint: ${{ secrets.OCI_FINGERPRINT }}
-      TF_VAR_private_key_path: ${{ env.OCI_PRIVATE_KEY_PATH }}
-      TF_VAR_region: ${{ secrets.OCI_REGION }}
-      TF_VAR_compartment_name: ${{ vars.OCI_COMPARTMENT_NAME }}
-      TF_VAR_my_public_ip_cidr: ${{ secrets.MY_PUBLIC_IP_CIDR }}
-      TF_VAR_compute_ssh_public_key: ${{ secrets.COMPUTE_SSH_PUBLIC_KEY }}
-      TF_VAR_budget_alert_email: ${{ secrets.BUDGET_ALERT_EMAIL }}
-    steps:
-    - name: OCI Terraform Setup
-      uses: ./.github/actions/oci-terraform-setup
-    - name: Terraform Format
-      run: terraform fmt
-    - name: Generate tfdocs
-      run: |
-        pip install terraform-docs
-        terraform-docs markdown table . > README.md
-        git diff --exit-code || (echo "Docs are out of date, run tfdocs" && exit 1)
-    # need to commit here.
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+      - name: Setup Python
+        uses: actions/setup-python@v3
+      - name: Run Pre-commit
+        uses: pre-commit/action@v3.0.0
+        with:
+          extra_args: run --all-files
+      - name: Auto-commit pre-commit fixes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "chore: auto-fix terraform format/docs [skip ci]"
+          git push

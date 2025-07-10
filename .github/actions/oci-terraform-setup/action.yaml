@@ -1,6 +1,47 @@
 name: "OCI Terraform Setup"
 description: "Common setup for Terraform and OCI CLI"
 
+inputs:
+  OCI_CLI_VERSION:
+    description: "OCI CLI version to install"
+    default: 3.62.0
+  TERRAFORM_VERSION:
+    description: "Terraform version to use"
+    default: 1.12.2
+  tenancy_ocid:
+    description: "OCI Tenancy OCID"
+    required: true
+    sensitive: true
+  user_ocid:
+    description: "OCI User OCID"
+    required: true
+    sensitive: true
+  fingerprint:
+    description: "OCI API Key Fingerprint"
+    required: true
+    sensitive: true
+  private_key_path:
+    description: "Path to store the OCI private key"
+    default: "$HOME/.oci/oci_api_key.pem"
+  oci_api_key:
+    description: "Private key content for OCI CLI"
+    required: true
+    sensitive: true
+  region:
+    description: "OCI region"
+    required: true
+  oci_bucket_name:
+    description: "Object Storage bucket name for backend"
+    required: true
+  tf_state_file_path:
+    description: "Name and path of the tfstate file in the bucket"
+    default: terraform.tfstate
+
+outputs:
+  oci_namespace:
+    description: "The retrieved OCI object storage namespace"
+    value: ${{ steps.ns.outputs.ns }}
+
 runs:
   using: "composite"
   steps:
@@ -12,26 +53,26 @@ runs:
       run: |
         sudo apt-get update
         sudo apt-get install -y python3-pip jq unzip
-        pip3 install oci-cli==${{ env.OCI_CLI_VERSION }}
+        pip3 install oci-cli==${{ inputs.OCI_CLI_VERSION }}
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
       with:
-        terraform_version: ${{ env.TERRAFORM_VERSION }}
+        terraform_version: ${{ inputs.TERRAFORM_VERSION }}
 
     - name: Configure OCI CLI
       shell: bash
       run: |
         mkdir -p ~/.oci
-        echo "${{ env.OCI_PRIVATE_KEY }}" > ${{ env.TF_VAR_private_key_path }}
-        chmod 600 ${{ env.TF_VAR_private_key_path }}
+        echo "${{ inputs.oci_api_key }}" > ${{ inputs.private_key_path }}
+        chmod 600 ${{ inputs.private_key_path }}
         cat > ~/.oci/config <<EOF
         [DEFAULT]
-        user=${{ env.TF_VAR_user_ocid }}
-        fingerprint=${{ env.TF_VAR_fingerprint }}
-        key_file=${{ env.TF_VAR_private_key_path }}
-        tenancy=${{ env.TF_VAR_tenancy_ocid }}
-        region=${{ env.TF_VAR_region }}
+        user=${{ inputs.user_ocid }}
+        fingerprint=${{ inputs.fingerprint }}
+        key_file=${{ inputs.private_key_path }}
+        tenancy=${{ inputs.tenancy_ocid }}
+        region=${{ inputs.region }}
         EOF
         chmod 600 ~/.oci/config
 
@@ -41,11 +82,11 @@ runs:
       run: |
         echo "ns=$(oci os ns get | jq -r '.data')" >> $GITHUB_OUTPUT
 
-    - name: Terraform Init (optional)
+    - name: Terraform Init
       shell: bash
       run: |
         terraform init \
-          -backend-config="bucket=${{ env.OCI_BUCKET_NAME }}" \
+          -backend-config="bucket=${{ inputs.oci_bucket_name }}" \
           -backend-config="namespace=${{ steps.ns.outputs.ns }}" \
-          -backend-config="region=${{ env.TF_VAR_region }}" \
-          -backend-config="key=terraform.tfstate"
+          -backend-config="region=${{ inputs.region }}" \
+          -backend-config="key=${{ inputs.tf_state_file_path }}"

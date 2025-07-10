@@ -38,12 +38,9 @@ Minimal, automated, and free remote dev environment using VS Code Tunnel on Orac
 
 ---
 
-## File Overview
+<!-- BEGIN_TF_DOCS -->
 
-- `01_vcn.tf`, `02_compute.tf`, ...: Terraform modules
-- `init.sh`: Initializes OCI resources
-- `cloud-init.yaml`: Cloud-init for compute instance
-- `.github/workflows/deploy.yaml`: GitHub Actions automation
+<!-- END_TF_DOCS -->
 
 ---
 
