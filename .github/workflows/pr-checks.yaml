@@ -24,6 +24,9 @@ jobs:
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
 
+      - name: Setup Python
+        uses: actions/setup-python@v3
+
       - name: Install terraform-docs
         run: |
           curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.20.0/terraform-docs-v0.20.0-$(uname)-amd64.tar.gz
@@ -38,7 +41,7 @@ jobs:
       - name: Install checkov
         run: pip install checkov
 
-      - name: Run pre-commit Hooks
+      - name: Run pre-commit hooks
         uses: pre-commit/action@v3.0.0
 
       - name: Auto-commit pre-commit fixes
