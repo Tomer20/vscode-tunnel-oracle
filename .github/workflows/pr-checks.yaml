@@ -13,19 +13,35 @@ env:
 
 jobs:
   pre-commit:
-    name: Terraform Pre-commit Checks
+    name: Pre-Commit Checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
-      - name: Setup Python
-        uses: actions/setup-python@v3
-      - name: Run Pre-commit
+
+      - name: Install terraform-docs
+        run: |
+          curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.20.0/terraform-docs-v0.20.0-$(uname)-amd64.tar.gz
+          tar -xzf terraform-docs.tar.gz
+          chmod +x terraform-docs
+          mv terraform-docs /usr/local/bin/terraform-docs
+
+      - name: Install tflint
+        run: |
+          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+          sudo mv tflint /usr/local/bin/
+
+      - name: Install checkov
+        run: pip install checkov
+
+      - name: Run pre-commit Hooks
         uses: pre-commit/action@v3.0.0
+
       - name: Auto-commit pre-commit fixes
         run: |
           git config user.name "github-actions"
