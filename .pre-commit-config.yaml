@@ -3,11 +3,11 @@ repos:
     rev: v1.99.5
     hooks:
       - id: terraform_fmt
-      - id: terraform_validate
       - id: terraform_docs
         args:
           - --args=--config=.terraform-docs.yml
-      - id: tflint
+      - id: terraform_tflint
+      - id: terraform_validate
       - id: checkov
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
