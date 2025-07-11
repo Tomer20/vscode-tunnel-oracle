@@ -9,10 +9,8 @@ resource "oci_core_nat_gateway" "nat" {
   compartment_id = data.oci_identity_compartment.target.id
   vcn_id         = oci_core_vcn.main_vcn.id
   display_name   = "vscodetunnel-nat"
-}
-
-resource "oci_core_route_table" "private_rt" {
-  compartment_id = data.oci_identity_compartment.target.id
+}resource "oci_core_route_table" "private_rt" {
+     compartment_id = data.oci_identity_compartment.target.id
   vcn_id         = oci_core_vcn.main_vcn.id
   display_name   = "private-rt"
 
