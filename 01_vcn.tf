@@ -54,3 +54,9 @@ resource "oci_core_subnet" "private_subnet" {
   dns_label                  = "privsub"
   availability_domain        = data.oci_identity_availability_domains.ads.availability_domains[0].name
 }
+
+
+
+
+
+
