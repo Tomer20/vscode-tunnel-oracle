@@ -50,6 +50,7 @@ jobs:
           SKIP: no-commit-to-branch
         with:
           extra_args: >-
+            --all-files
             --color=always
             --show-diff-on-failure
 
