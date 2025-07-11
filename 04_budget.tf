@@ -14,7 +14,7 @@ resource "oci_limits_quota" "quota_policy" {
   ]
 }
 
-resource "oci_budget_budget" "free_tier_budget" {
+resource "oci_budget_budget" "free_tier_budget"    {
   compartment_id = var.tenancy_ocid
   amount         = 1
   reset_period   = "MONTHLY"
