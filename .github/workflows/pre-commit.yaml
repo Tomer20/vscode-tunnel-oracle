@@ -17,11 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          persist-credentials: false
-
-      - name: Fetch all branches
-        run: |
-          git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+          fetch-depth: 0
+          persist-credentials: true
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
