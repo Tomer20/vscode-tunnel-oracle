@@ -1,0 +1,46 @@
+name: Pre-Commit Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+env:
+  TERRAFORM_VERSION: 1.12.2
+
+jobs:
+  pre-commit-checks:
+    name: Pre-Commit Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Install tflint
+        run: |
+          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+
+      - name: Install checkov
+        run: pip install checkov
+
+      - name: Run blocking pre-commit hooks
+        env:
+          SKIP: no-commit-to-branch
+        run: |
+          pre-commit run --config .pre-commit-config-checks.yaml --all-files

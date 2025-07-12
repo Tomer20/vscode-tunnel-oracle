@@ -1,8 +1,9 @@
-name: Pre-Commit Hooks
+name: Pre-Commit Docs
 
 on:
-  merge_group:
   pull_request:
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -11,8 +12,8 @@ env:
   TERRAFORM_VERSION: 1.12.2
 
 jobs:
-  pre-commit:
-    name: Pre-Commit Hooks
+  pre-commit-docs:
+    name: Pre-Commit Docs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -38,18 +39,11 @@ jobs:
           chmod +x terraform-docs
           mv terraform-docs /usr/local/bin/terraform-docs
 
-      - name: Install tflint
-        run: |
-          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-
-      - name: Install checkov
-        run: pip install checkov
-
       - name: Run fixable pre-commit hooks
         env:
           SKIP: no-commit-to-branch
         run: |
-          pre-commit run terraform_fmt terraform_docs end-of-file-fixer trailing-whitespace --all-files || true
+          pre-commit run --config .pre-commit-config-docs.yaml --all-files || true
 
       - name: Check for changes from pre-commit (autofixes)
         id: precommit_changes
@@ -63,9 +57,3 @@ jobs:
           default_author: github_actor
           message: '[pre-commit] Autofix violations'
           push: origin HEAD:${{ github.head_ref }}
-
-      - name: Run blocking pre-commit hooks
-        env:
-          SKIP: no-commit-to-branch
-        run: |
-          pre-commit run terraform_tflint terraform_validate terraform_checkov check-merge-conflict --all-files
