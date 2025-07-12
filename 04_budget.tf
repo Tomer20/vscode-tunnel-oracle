@@ -32,6 +32,6 @@ resource "oci_budget_alert_rule" "free_tier_alert" {
   threshold      = 0.01
   threshold_type = "ABSOLUTE"
   message        = "Free-tier usage has reached €0.01"
-  recipients     = var.budget_alert_email
-  description    = "Sends an alert when actual spend reaches €0.01 to monitor free-tier usage"
+  recipients     =  var.budget_alert_email
+  description       = "Sends an alert when actual spend reaches €0.01 to monitor free-tier usage"
 }
