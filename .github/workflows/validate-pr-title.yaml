@@ -1,4 +1,3 @@
-# checkov: skip=CKV2_GHA_1  # Checkov fails parsing `pull_request_target`, false positive
 name: Validate PR Title
 
 on:
@@ -8,9 +7,13 @@ on:
       - edited
       - synchronize
 
+permissions: read-all
+
 jobs:
   main:
     name: Validate PR title
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       # Please look up the latest version from
