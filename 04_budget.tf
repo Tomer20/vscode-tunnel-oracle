@@ -5,6 +5,9 @@ resource "oci_limits_quota" "quota_policy" {
   compartment_id = var.tenancy_ocid
   name           = "${var.compartment_name}-restrictions"
   description    = "Restricts usage to specific Terraform-managed resources in ${var.compartment_name}"
+
+
+  
       statements = [
     "zero compute-core quota in compartment ${var.compartment_name}",
     "zero compute-memory quota in compartment ${var.compartment_name}",
