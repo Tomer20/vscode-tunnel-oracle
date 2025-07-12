@@ -15,12 +15,13 @@ jobs:
     name: Pre-Commit Hooks
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - run: >-
-          git fetch --no-tags --prune --depth=1 origin
-          +refs/heads/*:refs/remotes/origin/*
+
+      - name: Fetch all branches
+        run: |
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -29,6 +30,9 @@ jobs:
 
       - name: Setup Python
         uses: actions/setup-python@v3
+
+      - name: Install pre-commit
+        run: pip install pre-commit
 
       - name: Install terraform-docs
         run: |
@@ -44,28 +48,26 @@ jobs:
       - name: Install checkov
         run: pip install checkov
 
-      - name: Run pre-commit hooks
-        uses: pre-commit/action@v3.0.1
+      - name: Run fixable pre-commit hooks
         env:
           SKIP: no-commit-to-branch
-        with:
-          extra_args: >-
-            --all-files
-            --color=always
-            --show-diff-on-failure
+        run: |
+          pre-commit run terraform_fmt terraform_docs end-of-file-fixer trailing-whitespace --all-files || true
 
-      # Needed to trigger pre-commit workflow on autofix commit
-      - name: Push fixes
-        if: failure()
+      - name: Check for changes from pre-commit (autofixes)
+        id: precommit_changes
+        run: |
+          git diff --quiet || echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Push autofixes
+        if: steps.precommit_changes.outputs.changed == 'true'
         uses: EndBug/add-and-commit@v9.1.4
         with:
-          # Determines the way the action fills missing author name and email.
-          # Three options are available:
-          # - github_actor -> UserName <UserName@users.noreply.github.com>
-          # - user_info -> Your Display Name <your-actual@email.com>
-          # - github_actions -> github-actions <email associated with the github logo>
-          # Default: github_actor
           default_author: github_actor
-          # The message for the commit.
-          # Default: 'Commit from GitHub Actions (name of the workflow)'
           message: '[pre-commit] Autofix violations'
+
+      - name: Run blocking pre-commit hooks
+        env:
+          SKIP: no-commit-to-branch
+        run: |
+          pre-commit run terraform_tflint terraform_validate terraform_checkov check-merge-conflict --all-files
