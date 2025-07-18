@@ -7,13 +7,12 @@ on:
       - edited
       - synchronize
 
-permissions: read-all
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   main:
-    name: Validate PR title
-    permissions:
-      contents: write
     runs-on: ubuntu-latest
     steps:
       # Please look up the latest version from

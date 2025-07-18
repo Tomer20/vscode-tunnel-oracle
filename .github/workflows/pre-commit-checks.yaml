@@ -13,7 +13,6 @@ env:
 
 jobs:
   pre-commit-checks:
-    name: Pre-Commit Checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

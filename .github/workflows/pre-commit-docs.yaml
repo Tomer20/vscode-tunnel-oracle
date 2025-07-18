@@ -13,7 +13,6 @@ env:
 
 jobs:
   pre-commit-docs:
-    name: Pre-Commit Docs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
