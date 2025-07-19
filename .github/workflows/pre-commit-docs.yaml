@@ -5,16 +5,15 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-  actions: write
-
 env:
   TERRAFORM_VERSION: 1.12.2
 
 jobs:
   pre-commit-docs:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -27,7 +26,7 @@ jobs:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v3
 
       - name: Install pre-commit
         run: pip install pre-commit
