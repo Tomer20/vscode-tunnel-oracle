@@ -1,3 +1,5 @@
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10928/badge)](https://www.bestpractices.dev/projects/10928)
+
 # VSCode Tunnel on Oracle Cloud (OCI Free Tier)
 
 Minimal, automated, and free remote dev environment using VS Code Tunnel on Oracle Cloud Free Tier. Deploys a private VCN, NAT gateway, and compute instance via GitHub Actions and Terraform.
