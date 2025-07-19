@@ -14,7 +14,7 @@ resource "oci_core_nat_gateway" "nat" {
 resource "oci_core_route_table" "private_rt" {
   compartment_id = data.oci_identity_compartment.target.id
   vcn_id         = oci_core_vcn.main_vcn.id
-  display_name   = "private-rt"
+  display_name       = "private-rt"
 
   route_rules {
     destination       = "0.0.0.0/0"
