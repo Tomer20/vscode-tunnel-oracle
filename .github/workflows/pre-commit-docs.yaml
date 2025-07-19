@@ -7,8 +7,7 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
-  statuses: write
+  actions: write
 
 env:
   TERRAFORM_VERSION: 1.12.2
