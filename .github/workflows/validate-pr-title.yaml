@@ -7,14 +7,13 @@ on:
       - edited
       - synchronize
 
-permissions:
-  contents: read
-  pull-requests: write
-  statuses: write
-
 jobs:
   main:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      statuses: write
     steps:
       # Please look up the latest version from
       # https://github.com/amannn/action-semantic-pull-request/releases
