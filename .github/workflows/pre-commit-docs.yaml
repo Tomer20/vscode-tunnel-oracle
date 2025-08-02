@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 env:
   TERRAFORM_VERSION: 1.12.2
 
