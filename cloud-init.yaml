@@ -1,0 +1,26 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+packages:
+  - curl
+  - wget
+  - tar
+  - oracle-cloud-agent
+  - docker.io
+runcmd:
+  - systemctl enable oracle-cloud-agent
+  - systemctl start oracle-cloud-agent
+  - systemctl enable docker
+  - systemctl start docker
+  - curl -L "https://update.code.visualstudio.com/latest/cli-linux-arm64/stable" -o vscode_cli.tar.gz
+  - tar -xf vscode_cli.tar.gz
+  - mv code /usr/local/bin/code
+  - chmod +x /usr/local/bin/code
+  - rm vscode_cli.tar.gz
+  - chown -R ubuntu:ubuntu /home/ubuntu
+  - usermod -aG docker ubuntu
+  - curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+  - chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+  - echo "deb [arch=arm64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+  - apt update
+  - apt install -y gh
