@@ -96,7 +96,7 @@ No modules.
 | <a name="input_private_key_path"></a> [private\_key\_path](#input\_private\_key\_path) | Path to the private key for OCI CLI authentication. | `string` | n/a | yes |
 | <a name="input_private_subnet_cidr_block"></a> [private\_subnet\_cidr\_block](#input\_private\_subnet\_cidr\_block) | Private subnet CIDR. | `string` | `"10.0.0.0/30"` | no |
 | <a name="input_public_subnet_cidr_block"></a> [public\_subnet\_cidr\_block](#input\_public\_subnet\_cidr\_block) | Public subnet CIDR. | `string` | `"10.0.0.8/29"` | no |
-| <a name="input_region"></a> [region](#input\_region) | The OCI region to deploy into (e.g., eu-frankfurt-1). | `string` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | The Odfs fdsf dsCI region to deploy into (e.g., eu-frankfurt-1). | `string` | n/a | yes |
 | <a name="input_subnet_display_name"></a> [subnet\_display\_name](#input\_subnet\_display\_name) | Display name of the subnet. | `string` | `"vscode-tunnel-private-subnet"` | no |
 | <a name="input_tenancy_ocid"></a> [tenancy\_ocid](#input\_tenancy\_ocid) | Your Oracle Cloud tenancy OCID. | `string` | n/a | yes |
 | <a name="input_user_ocid"></a> [user\_ocid](#input\_user\_ocid) | The OCID of the OCI user for authentication. | `string` | n/a | yes |
