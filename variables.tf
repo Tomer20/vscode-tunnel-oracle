@@ -99,9 +99,3 @@ variable "enable_strict_limits" {
   type        = bool
   default     = true
 }
-
-variable "test_var" {
-  description = "test"
-  type = bool
-  default = true
-}
