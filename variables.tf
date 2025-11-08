@@ -21,7 +21,7 @@ variable "private_key_path" {
 }
 
 variable "region" {
-  description = "The OCI region to deploy into (e.g., eu-frankfurt-1)."
+  description = "The Odfs fdsf dsCI region to deploy into (e.g., eu-frankfurt-1)."
   type        = string
 }
 
