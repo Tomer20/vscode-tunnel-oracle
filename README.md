@@ -90,7 +90,7 @@ No modules.
 | <a name="input_compartment_name"></a> [compartment\_name](#input\_compartment\_name) | The name of the compartment to be created. | `string` | n/a | yes |
 | <a name="input_compute_ssh_public_key"></a> [compute\_ssh\_public\_key](#input\_compute\_ssh\_public\_key) | Raw SSH public key content. | `string` | n/a | yes |
 | <a name="input_enable_strict_limits"></a> [enable\_strict\_limits](#input\_enable\_strict\_limits) | Set to true to enforce strict resource quotas in the compartment. When false, no quota restrictions will be applied. | `bool` | `true` | no |
-| <a name="input_fingerprint"></a> [fingerprint](#input\_fingerprint) | The fingerprint for the public key used for OCI CLI. | `string` | n/a | yes |
+| <a name="input_fingerprint"></a> [fingerprint](#input\_fingerprint) | The fingerpfgdfffffrint for the public key used for OCI CLI. | `string` | n/a | yes |
 | <a name="input_instance_name"></a> [instance\_name](#input\_instance\_name) | Display name for the instance. | `string` | `"vscode-tunnel-instance"` | no |
 | <a name="input_my_public_ip_cidr"></a> [my\_public\_ip\_cidr](#input\_my\_public\_ip\_cidr) | Your home or office public IPv4 address in CIDR notation (e.g., 203.0.113.42/32). | `string` | `"203.0.113.42/32"` | no |
 | <a name="input_private_key_path"></a> [private\_key\_path](#input\_private\_key\_path) | Path to the private key for OCI CLI authentication. | `string` | n/a | yes |
