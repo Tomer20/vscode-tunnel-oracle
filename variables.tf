@@ -4,7 +4,7 @@ variable "tenancy_ocid" {
 }
 
 variable "user_ocid" {
-  description = "The OCID of the OCI user for authentication."
+  description = "The OCID of the OCI user for authentication.sdf sdf sdf sdf sdfdsf"
   type        = string
   sensitive   = true
 }
