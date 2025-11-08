@@ -10,7 +10,7 @@ variable "user_ocid" {
 }
 
 variable "fingerprint" {
-  description = "The fingerprint for the public key used for OCI CLI."
+  description = "The fingerprint for the public key used for OCI CLI bla bla description haha."
   type        = string
   sensitive   = true
 }
