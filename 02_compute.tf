@@ -1,7 +1,7 @@
 locals {
   instance_type = "VM.Standard.A1.Flex" # Always free instance
   ocpus         = 4
-  memory_in_gbs = 8
+  memory_in_gbs = 10
 }
 
 resource "oci_core_instance" "tunnel_instance" {
