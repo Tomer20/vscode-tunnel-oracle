@@ -99,7 +99,7 @@ No modules.
 | <a name="input_region"></a> [region](#input\_region) | The OCI region to deploy into (e.g., eu-frankfurt-1). | `string` | n/a | yes |
 | <a name="input_subnet_display_name"></a> [subnet\_display\_name](#input\_subnet\_display\_name) | Display name of the subnet. | `string` | `"vscode-tunnel-private-subnet"` | no |
 | <a name="input_tenancy_ocid"></a> [tenancy\_ocid](#input\_tenancy\_ocid) | Your Oracle Cloud tenancy OCID. | `string` | n/a | yes |
-| <a name="input_user_ocid"></a> [user\_ocid](#input\_user\_ocid) | The OCID of the OCI user for authentication. | `string` | n/a | yes |
+| <a name="input_user_ocid"></a> [user\_ocid](#input\_user\_ocid) | The OCID of the OCI user for authentication.sdf sdf sdf sdf sdfdsf | `string` | n/a | yes |
 | <a name="input_vcn_cidr_block"></a> [vcn\_cidr\_block](#input\_vcn\_cidr\_block) | Minimal VCN CIDR block. | `string` | `"10.0.0.0/28"` | no |
 | <a name="input_vcn_display_name"></a> [vcn\_display\_name](#input\_vcn\_display\_name) | Display name of the VCN. | `string` | `"vscode-tunnel-vcn"` | no |
 
