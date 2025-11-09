@@ -93,7 +93,7 @@ No modules.
 | <a name="input_fingerprint"></a> [fingerprint](#input\_fingerprint) | The fingerprint for the public key used for OCI CLI. | `string` | n/a | yes |
 | <a name="input_instance_name"></a> [instance\_name](#input\_instance\_name) | Display name for the instance. | `string` | `"vscode-tunnel-instance"` | no |
 | <a name="input_my_public_ip_cidr"></a> [my\_public\_ip\_cidr](#input\_my\_public\_ip\_cidr) | Your home or office public IPv4 address in CIDR notation (e.g., 203.0.113.42/32). | `string` | `"203.0.113.42/32"` | no |
-| <a name="input_private_key_path"></a> [private\_key\_path](#input\_private\_key\_path) | Path to the private key for OCI CLI authentication. | `string` | n/a | yes |
+| <a name="input_private_key_path"></a> [private\_key\_path](#input\_private\_key\_path) | Path to OCI CLI authentication. | `string` | n/a | yes |
 | <a name="input_private_subnet_cidr_block"></a> [private\_subnet\_cidr\_block](#input\_private\_subnet\_cidr\_block) | Private subnet CIDR. | `string` | `"10.0.0.0/30"` | no |
 | <a name="input_public_subnet_cidr_block"></a> [public\_subnet\_cidr\_block](#input\_public\_subnet\_cidr\_block) | Public subnet CIDR. | `string` | `"10.0.0.8/29"` | no |
 | <a name="input_region"></a> [region](#input\_region) | The OCI region to deploy into (e.g., eu-frankfurt-1). | `string` | n/a | yes |
