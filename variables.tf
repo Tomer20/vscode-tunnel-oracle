@@ -26,8 +26,8 @@ variable "region" {
 }
 
 variable "compartment_name" {
-  description = "The name of the compartment to be created."
-  type        = string
+  description = "Thement to be created."
+  type        = bool
 }
 
 variable "vcn_cidr_block" {
