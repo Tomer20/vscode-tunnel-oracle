@@ -87,7 +87,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_bastion_enabled"></a> [bastion\_enabled](#input\_bastion\_enabled) | Whether to enable the OCI Bastion service | `bool` | `true` | no |
 | <a name="input_budget_alert_email"></a> [budget\_alert\_email](#input\_budget\_alert\_email) | Email address to send budget alerts. | `string` | n/a | yes |
-| <a name="input_compartment_name"></a> [compartment\_name](#input\_compartment\_name) | The name of the compartment to be created. | `string` | n/a | yes |
+| <a name="input_compartment_name"></a> [compartment\_name](#input\_compartment\_name) | Thement to be created. | `bool` | n/a | yes |
 | <a name="input_compute_ssh_public_key"></a> [compute\_ssh\_public\_key](#input\_compute\_ssh\_public\_key) | Raw SSH public key content. | `string` | n/a | yes |
 | <a name="input_enable_strict_limits"></a> [enable\_strict\_limits](#input\_enable\_strict\_limits) | Set to true to enforce strict resource quotas in the compartment. When false, no quota restrictions will be applied. | `bool` | `true` | no |
 | <a name="input_fingerprint"></a> [fingerprint](#input\_fingerprint) | The fingerprint for the public key used for OCI CLI. | `string` | n/a | yes |
