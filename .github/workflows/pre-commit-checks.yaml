@@ -6,9 +6,6 @@ on:
       - main
     paths-ignore:
       - '.github/**'
-      - 'README.md'
-      - 'SECURITY.md'
-      - 'LICENSE'
 
 permissions:
   contents: read
