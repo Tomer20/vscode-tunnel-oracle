@@ -6,7 +6,8 @@ on:
       - main
     paths-ignore:
       - '.github/**'
-      - '**.md'
+      - 'README.md'
+      - 'SECURITY.md'
       - 'LICENSE'
 
 permissions:
