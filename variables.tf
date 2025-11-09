@@ -16,7 +16,7 @@ variable "fingerprint" {
 }
 
 variable "private_key_path" {
-  description = "Path to the private key for OCI CLI authentication."
+  description = "Path to OCI CLI authentication."
   type        = string
 }
 
