@@ -1,23 +1,49 @@
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10928/badge)](https://www.bestpractices.dev/projects/10928)
 
-# VSCode Tunnel on Oracle Cloud (OCI Free Tier)
+# VSCode Tunnel on Oracle Cloud Free Tier (OCI)
 
-Minimal, automated, and free remote dev environment using VS Code Tunnel on Oracle Cloud Free Tier. Deploys a private VCN, NAT gateway, and compute instance via GitHub Actions and Terraform.
+Run a full VSCode development environment on Oracle Cloud — even from your iPad.
 
----
-
-## Features
-
-- One-click deploy with GitHub Actions
-- Minimal VCN (`/30` CIDR), private subnet, NAT gateway
-- Default security lists and routing
-- Free tier compute instance for VS Code Tunnel
-- Automated OCI compartment and bucket setup
-- Budget alert email support
+This project started as a personal challenge to write code on an iPad using **VSCode tunnels** and **Oracle Cloud’s free tier**, and turned into a great setups for developers who want a *free, always-on cloud dev environment*.
 
 ---
 
-## Quick Start
+## 🚀 Overview
+
+VSCode Tunnels let you connect to a remote machine without opening SSH ports. Combined with Oracle Cloud Infrastructure’s free tier, you can spin up a private dev VM and connect directly from VSCode anywhere — tablet, laptop, or browser.
+
+---
+
+## 💡 Why Oracle?
+
+Oracle’s free tier gives you:
+
+- 4 ARM cores
+- 24GB RAM
+- 200GB block storage
+
+All permanently free — ideal for self-hosted VSCode and playgrounds.
+
+---
+
+## 🛠️ Features
+
+- Uses GitHub authentication (no key management).
+- Runs seamlessly on Oracle Free Tier (no cost!).
+- Perfect for development from mobile or tablet.
+
+---
+
+## 🧩 Dependencies
+
+Before you begin, make sure you have:
+
+1. **GitHub account** – required to authenticate VSCode Tunnel *(Easy 😄)*.
+2. **Oracle Cloud (OCI) account** – needed to launch and manage your compute instance.
+
+---
+
+## ⚡️ Quick Start
 
 1. **Configure GitHub Secrets/Variables:**
    - `OCI_TENANCY_OCID`, `OCI_USER_OCID`, `OCI_FINGERPRINT`, `OCI_REGION`, `OCI_PRIVATE_KEY`, `MY_PUBLIC_IP_CIDR`, `COMPUTE_SSH_PUBLIC_KEY`, `VSCODE_GITHUB_TOKEN`, `BUDGET_ALERT_EMAIL` (secrets)
@@ -28,7 +54,7 @@ Minimal, automated, and free remote dev environment using VS Code Tunnel on Orac
 
 3. **Post-Deploy (Manual):**
    - Login to OCI, create a Bastion session, copy the SSH command
-   - SSH to the bastion server
+   - SSH to the bastion server (this can be done directly from the OCI console)
    - On the server:
      ```sh
      git config --global user.name "Your Name"
@@ -128,6 +154,14 @@ No modules.
 
 ---
 
-## License
+## 🧠 Notes
+
+- This project is meant for experimentation and learning.
+- You can fork and modify it to fit your own setup.
+- Contributions and PRs welcome!
+
+---
+
+## 📜 License
 
 [MIT](./LICENSE)
