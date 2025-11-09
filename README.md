@@ -46,13 +46,13 @@ Minimal, automated, and free remote dev environment using VS Code Tunnel on Orac
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12.2 |
-| <a name="requirement_oci"></a> [oci](#requirement\_oci) | 7.7.0 |
+| <a name="requirement_oci"></a> [oci](#requirement\_oci) | 7.24.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_oci"></a> [oci](#provider\_oci) | 7.7.0 |
+| <a name="provider_oci"></a> [oci](#provider\_oci) | 7.24.0 |
 
 ## Modules
 
@@ -62,24 +62,24 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [oci_bastion_bastion.bastion](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/resources/bastion_bastion) | resource |
-| [oci_budget_alert_rule.free_tier_alert](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/resources/budget_alert_rule) | resource |
-| [oci_budget_budget.free_tier_budget](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/resources/budget_budget) | resource |
-| [oci_core_instance.tunnel_instance](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/resources/core_instance) | resource |
-| [oci_core_internet_gateway.igw](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/resources/core_internet_gateway) | resource |
-| [oci_core_nat_gateway.nat](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/resources/core_nat_gateway) | resource |
-| [oci_core_route_table.private_rt](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/resources/core_route_table) | resource |
-| [oci_core_route_table.public_rt](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/resources/core_route_table) | resource |
-| [oci_core_security_list.private_sg](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/resources/core_security_list) | resource |
-| [oci_core_security_list.public_sg](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/resources/core_security_list) | resource |
-| [oci_core_subnet.private_subnet](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/resources/core_subnet) | resource |
-| [oci_core_subnet.public_subnet](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/resources/core_subnet) | resource |
-| [oci_core_vcn.main_vcn](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/resources/core_vcn) | resource |
-| [oci_limits_quota.quota_policy](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/resources/limits_quota) | resource |
-| [oci_core_images.ubuntu](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/data-sources/core_images) | data source |
-| [oci_identity_availability_domains.ads](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/data-sources/identity_availability_domains) | data source |
-| [oci_identity_compartment.target](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/data-sources/identity_compartment) | data source |
-| [oci_identity_compartments.matching](https://registry.terraform.io/providers/oracle/oci/7.7.0/docs/data-sources/identity_compartments) | data source |
+| [oci_bastion_bastion.bastion](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/resources/bastion_bastion) | resource |
+| [oci_budget_alert_rule.free_tier_alert](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/resources/budget_alert_rule) | resource |
+| [oci_budget_budget.free_tier_budget](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/resources/budget_budget) | resource |
+| [oci_core_instance.tunnel_instance](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/resources/core_instance) | resource |
+| [oci_core_internet_gateway.igw](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/resources/core_internet_gateway) | resource |
+| [oci_core_nat_gateway.nat](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/resources/core_nat_gateway) | resource |
+| [oci_core_route_table.private_rt](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/resources/core_route_table) | resource |
+| [oci_core_route_table.public_rt](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/resources/core_route_table) | resource |
+| [oci_core_security_list.private_sg](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/resources/core_security_list) | resource |
+| [oci_core_security_list.public_sg](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/resources/core_security_list) | resource |
+| [oci_core_subnet.private_subnet](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/resources/core_subnet) | resource |
+| [oci_core_subnet.public_subnet](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/resources/core_subnet) | resource |
+| [oci_core_vcn.main_vcn](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/resources/core_vcn) | resource |
+| [oci_limits_quota.quota_policy](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/resources/limits_quota) | resource |
+| [oci_core_images.ubuntu](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/data-sources/core_images) | data source |
+| [oci_identity_availability_domains.ads](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/data-sources/identity_availability_domains) | data source |
+| [oci_identity_compartment.target](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/data-sources/identity_compartment) | data source |
+| [oci_identity_compartments.matching](https://registry.terraform.io/providers/oracle/oci/7.24.0/docs/data-sources/identity_compartments) | data source |
 
 ## Inputs
 
